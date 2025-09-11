@@ -59,7 +59,10 @@ export default function HomePage() {
             )}
 
             {activeView === "suppliers" && (
-              <SuppliersTable suppliers={suppliersHook.suppliers} loading={suppliersHook.loading} />
+              <SuppliersTable 
+                suppliers={suppliersHook.suppliers} 
+                loading={suppliersHook.loading}
+                deleteSupplier={suppliersHook.deleteSupplier} />
             )}
 
             {activeView === "categories" && (

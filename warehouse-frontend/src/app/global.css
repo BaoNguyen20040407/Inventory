@@ -100,7 +100,7 @@
 
 /* Right panel: bảng và wrapper */
 .right-panel {
-  padding: 40px;
+  padding: 0px;
   display: block;   /* hoặc bỏ hẳn display:flex */
 }
 
