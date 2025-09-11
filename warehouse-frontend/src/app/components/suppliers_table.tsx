@@ -1,5 +1,6 @@
 "use client";
 import { Supplier } from "../hooks/useSuppliers";
+import { useRouter } from "next/navigation";
 
 interface Props {
   suppliers: Supplier[];
@@ -7,10 +8,32 @@ interface Props {
 }
 
 export default function SuppliersTable({ suppliers, loading }: Props) {
+  const router = useRouter();
+
   if (loading) return <p style={{ padding: 16, color: "#6b7280" }}>Loading...</p>;
 
   return (
     <div className="table-wrapper">
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+        <button
+          onClick={() => router.push("/suppliers/add")}
+          style={{
+            backgroundColor: "green",
+            color: "white",
+            fontWeight: "bold",
+            padding: "8px 14px",
+            borderRadius: "6px",
+            border: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            cursor: "pointer",
+          }}
+        >
+          <span style={{ fontSize: "18px" }}>+</span> Thêm
+        </button>
+      </div>
+
       <table>
         <thead>
           <tr>

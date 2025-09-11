@@ -4,6 +4,7 @@ import { Product } from './products/product.entity';
 import { Category } from './category/category.entity';
 import { Supplier } from './supplier/supplier.entity';
 import { ProductsModule } from './products/products.module';
+import { SupplierModule } from './supplier/supplier.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ProductsModule } from './products/products.module';
       synchronize: false,
     }),
     ProductsModule,
+    SupplierModule,
   ],
 })
 export class AppModule {}
