@@ -1,30 +1,28 @@
 // src/products/products.service.ts
 import { Injectable } from '@nestjs/common';
-import { Product } from './product.model';
+import { InjectRepository } from '@nestjs/typeorm';   // <- Bắt buộc
+import { Repository } from 'typeorm';               // <- Bắt buộc
+import { Product } from './product.entity';
 
 @Injectable()
 export class ProductsService {
-  private products: Product[] = [
-    { id: 1, name: 'Sách', quantity: 100, price: 20000 },
-    { id: 2, name: 'Bút bi', quantity: 200, price: 5000 },
-    { id: 3, name: 'Vở học sinh', quantity: 150, price: 12000 },
-  ];
+  constructor(@InjectRepository(Product) private productRepo: Repository<Product>) {}
 
-  findAll(): Product[] {
-    return this.products;
+  findAll() { return this.productRepo.find({ relations: ['category', 'supplier'] }); }
+
+  findOne(id: number) { 
+    return this.productRepo.findOne({ where: { id }, relations: ['category', 'supplier'] });
   }
 
-  importProduct(id: number, quantity: number): Product | undefined {
-    const product = this.products.find((p) => p.id === id);
-    if (product) product.quantity += quantity;
-    return product;
+  create(data: Partial<Product>) { 
+    return this.productRepo.save(this.productRepo.create(data)); 
   }
 
-  exportProduct(id: number, quantity: number): Product | undefined {
-    const product = this.products.find((p) => p.id === id);
-    if (product && product.quantity >= quantity) {
-      product.quantity -= quantity;
-    }
-    return product;
+  update(id: number, data: Partial<Product>) { 
+    return this.productRepo.update(id, data); 
+  }
+
+  remove(id: number) { 
+    return this.productRepo.delete(id); 
   }
 }

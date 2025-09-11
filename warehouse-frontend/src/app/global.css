@@ -1,129 +1,168 @@
-/* src/app/globals.css */
-
-/* Reset cơ bản */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: "Inter", Arial, Helvetica, sans-serif;
+/* --- Layout chính: header + 2 cột --- */
+.app-container {
+  padding: 24px;
   background-color: #f4f6f8;
+  min-height: 100vh;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
   color: #333;
 }
 
-/* Tiêu đề */
-h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 1rem;
+/* header (ngang trên cùng, trải đều) */
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.app-header .logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: linear-gradient(135deg,#f59e0b,#ef4444);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;
 }
 
-/* Bảng */
+/* lưới 2 cột: left (fixed) + right (fluid) */
+.app-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Left panel: card chứa form / controls */
+.left-panel {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  min-height: 280px;
+}
+
+/* các section trong left-panel */
+/* các section trong left-panel */
+.panel-section {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #fafafa;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  transition: all 0.25s ease;
+  text-align: center; /* canh chữ ở giữa */
+}
+
+.panel-section:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.panel-section h3 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: #111827;
+  font-weight: 600;
+}
+
+.panel-section p.help {
+  color: #6b7280;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+/* form controls */
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  outline: none;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  background: #fafafa;
+}
+.input:focus { border-color:#2563eb; box-shadow: 0 2px 8px rgba(37,99,235,0.08); }
+
+.row {
+  display:flex;
+  gap:8px;
+}
+.btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor:pointer;
+  border: none;
+  font-weight:600;
+}
+.btn-primary { background:#2563eb; color:#fff; }
+.btn-ghost { background:#f3f4f6; color:#111827; }
+
+/* Right panel: bảng và wrapper */
+.right-panel {
+  /* bảng sẽ nằm trong 1 card để có padding, shadow,... */
+  background: transparent;
+  border-radius: 12px;
+}
+.table-card {
+  background:#fff;
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+  overflow: hidden;
+}
+
+/* giữ header table dính khi cuộn */
+.table-wrapper {
+  max-height: calc(100vh - 260px);
+  overflow: auto;
+}
+
+/* dùng lại style table trước đó, nhưng tinh chỉnh */
 table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  background-color: #ffffff;
+  border-collapse: collapse;
+  min-width: 720px; /* tránh bóp quá nhỏ trên desktop */
 }
-
-th, td {
-  padding: 0.75rem 1rem;
+thead th {
+  background-color: #2563eb;
+  color: #fff;
+  padding: 12px 14px;
   text-align: left;
+  font-weight: 700;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
-
-thead {
-  background-color: #2563eb; /* Xanh dương nổi bật */
-  color: #ffffff;
-}
-
-tbody tr {
-  border-bottom: 1px solid #e5e7eb;
-  transition: background-color 0.2s ease;
-}
-
-tbody tr:hover {
-  background-color: #f1f5f9;
-}
-
-/* Các cột */
-th {
-  font-weight: 600;
+tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #eef2f7;
+  color: #374151;
   font-size: 0.95rem;
 }
+tbody tr:hover { background:#fbfdff; }
 
-td {
-  font-size: 0.9rem;
-  color: #374151;
+/* nút import/export */
+.btn-small {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight:700;
+  margin-right: 6px;
+}
+.btn-green { background:#10b981; color:#fff; border:none; }
+.btn-red { background:#ef4444; color:#fff; border:none; }
+
+/* Responsive: nhỏ hơn 1024 -> xếp dọc */
+@media (max-width: 1024px) {
+  .app-grid { grid-template-columns: 1fr; }
+  .table-wrapper { max-height: none; }
 }
 
-/* Nút hành động */
-button {
-  font-size: 0.85rem;
-  font-weight: 500;
-  padding: 0.4rem 0.8rem;
-  border-radius: 0.375rem;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-button:hover {
-  opacity: 0.85;
-}
-
-/* Nhập kho */
-button.bg-green-500 {
-  background-color: #10b981;
-  color: #ffffff;
-}
-
-button.bg-green-500:hover {
-  background-color: #059669;
-}
-
-/* Xuất kho */
-button.bg-red-500 {
-  background-color: #ef4444;
-  color: #ffffff;
-}
-
-button.bg-red-500:hover {
-  background-color: #b91c1c;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  table, thead, tbody, th, td, tr {
-    display: block;
-  }
-
-  th {
-    background-color: #1f2937;
-    color: #ffffff;
-    padding: 0.5rem;
-  }
-
-  td {
-    padding: 0.5rem;
-    border-bottom: 1px solid #e5e7eb;
-  }
-
-  tbody tr {
-    margin-bottom: 1rem;
-    border-bottom: 2px solid #e5e7eb;
-  }
-
-  td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    display: block;
-    margin-bottom: 0.25rem;
-    color: #6b7280;
-  }
+/* Mobile small: biến table thành block (nếu cần dùng kiểu card list) */
+@media (max-width: 640px) {
+  table, thead, tbody, th, td, tr { display: block; width: 100%; }
+  thead { display:none; }
+  tbody tr { margin-bottom: 12px; border-radius:8px; background:#fff; padding:10px; box-shadow:0 4px 12px rgba(0,0,0,0.03); }
+  td { padding:6px 0; border: none; }
+  td::before { content: attr(data-label); font-weight:700; display:block; color:#6b7280; margin-bottom:6px; }
 }

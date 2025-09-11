@@ -1,33 +1,46 @@
-// src/products/products.controller.ts
-import { Controller, Get, Patch, Param, Body } from '@nestjs/common';
+import { 
+  Controller, 
+  Get, 
+  Post, 
+  Put, 
+  Delete, 
+  Param, 
+  Body, 
+  ParseIntPipe 
+} from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { Product } from './product.model';
+import { Product } from './product.entity';
+import { UpdateResult, DeleteResult } from 'typeorm';
 
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(private readonly productService: ProductsService) {}
 
-  // Lấy danh sách tất cả sản phẩm
   @Get()
-  findAll(): Product[] {
-    return this.productsService.findAll();
+  findAll(): Promise<Product[]> {
+    return this.productService.findAll();
   }
 
-  // Nhập kho (+ quantity)
-  @Patch(':id/import')
-  importProduct(
-    @Param('id') id: string,
-    @Body('quantity') quantity: number,
-  ): Product | undefined {
-    return this.productsService.importProduct(+id, quantity);
+  @Get(':id')
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<Product | null> {
+    return this.productService.findOne(id);
   }
 
-  // Xuất kho (- quantity)
-  @Patch(':id/export')
-  exportProduct(
-    @Param('id') id: string,
-    @Body('quantity') quantity: number,
-  ): Product | undefined {
-    return this.productsService.exportProduct(+id, quantity);
+  @Post()
+  create(@Body() data: Partial<Product>): Promise<Product> {
+    return this.productService.create(data);
+  }
+
+  @Put(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: Partial<Product>,
+  ): Promise<UpdateResult> {
+    return this.productService.update(id, data);
+  }
+
+  @Delete(':id')
+  remove(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult> {
+    return this.productService.remove(id);
   }
 }

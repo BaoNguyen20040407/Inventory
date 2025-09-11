@@ -1,0 +1,27 @@
+// src/products/product.entity.ts
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Supplier } from '../supplier/supplier.entity';
+import { Category } from '../category/category.entity';
+
+@Entity('PRODUCT')
+export class Product {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ length: 100 })
+  name: string;
+
+  @Column('int', { default: 0 })
+  quantity: number;
+
+  @Column('decimal', { precision: 10, scale: 2 })
+  price: number;
+
+  @ManyToOne(() => Category, category => category.products, { nullable: true })
+  @JoinColumn({ name: 'category_id' })
+  category: Category;
+  
+  @ManyToOne(() => Supplier, supplier => supplier.products, { nullable: true })
+  @JoinColumn({ name: 'supplier_id' })
+  supplier: Supplier;
+}
