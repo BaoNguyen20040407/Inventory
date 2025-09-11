@@ -7,7 +7,7 @@ import { useProducts } from "./hooks/useProducts";
 import { useSuppliers } from "./hooks/useSuppliers";
 import { useCategories } from "./hooks/useCategories";
 import { useStockMovements } from "./hooks/useStockMovements";
-import StockMovementsTable from "./components/stock_movements";
+import StockMovementsTable from "./components/stock_movements_table";
 
 type PanelView = "products" | "suppliers" | "categories" | "inventory";
 
