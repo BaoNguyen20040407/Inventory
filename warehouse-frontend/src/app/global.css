@@ -33,7 +33,7 @@
 
 /* Left panel: card chứa form / controls */
 .left-panel {
-  background: #000000;
+  background: #ffffff;
   border-radius: 12px;
   padding: 18px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.05);
@@ -44,8 +44,8 @@
 .panel-section {
   margin-bottom: 20px;
   padding: 16px;
-  background: #00ffe1;
-  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  border: 2px solid #057cf4;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.04);
   transition: all 0.25s ease;
@@ -61,7 +61,7 @@
 .panel-section h3 {
   font-size: 1rem;
   margin-bottom: 8px;
-  color: #111827;
+  color: #000000;
   font-weight: 600;
 }
 
@@ -100,29 +100,36 @@
 
 /* Right panel: bảng và wrapper */
 .right-panel {
-  /* bảng sẽ nằm trong 1 card để có padding, shadow,... */
-  background: transparent;
-  border-radius: 12px;
+  display: flex;
+  justify-content: center;  /* canh giữa ngang */
+  align-items: center;      /* canh giữa dọc (nếu muốn) */
+  padding: 40px;
 }
+
+/* Form */
 .table-card {
-  background:#fff;
+  background: #fff;
   border-radius: 12px;
-  padding: 8px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.03);
-  overflow: hidden;
+  padding: 24px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+
+  width: 70%;        /* chiếm 70% màn hình */
+  max-width: 1200px;  /* giới hạn tối đa */
+  margin: 0 auto;
 }
+
 
 /* giữ header table dính khi cuộn */
 .table-wrapper {
   max-height: calc(100vh - 260px);
-  overflow: auto;
+  overflow-x: auto;  /* thêm dòng này */
+  overflow-y: auto;
 }
 
 /* dùng lại style table trước đó, nhưng tinh chỉnh */
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 720px; /* tránh bóp quá nhỏ trên desktop */
 }
 thead th {
   background-color: #2563eb;
@@ -179,6 +186,7 @@ tbody tr:hover { background:#fbfdff; }
   display: flex;
   gap: 10px;
   margin-top: 10px;
+  justify-content: flex-end;
 }
 
 /* BUTTONS                   */
@@ -197,7 +205,7 @@ tbody tr:hover { background:#fbfdff; }
 }
 
 .btn-green {
-  background: #22c55e; /* xanh lá */
+  background: green; /* xanh lá */
   border: none;
   color: white;
 }

@@ -43,7 +43,7 @@ export default function AddSupplierPage() {
       </header>
 
       <main className="right-panel">
-        <div className="table-card" style={{ maxWidth: 500 }}>
+        <div className="table-card">
           <form className="form" onSubmit={handleSubmit}>
             <input
               type="text"
