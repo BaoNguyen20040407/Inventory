@@ -33,7 +33,7 @@ export default function CategoriesTable({ categories, loading, onDelete }: Props
       <div style={{display: "flex", justifyContent: "space-between", marginBottom: 12, gap: 12}}>
         <input
           type="text"
-          placeholder="Tìm kiếm loại sản phẩm"
+          placeholder="Tìm kiếm loại sản phẩm..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           style={{

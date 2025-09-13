@@ -6,8 +6,8 @@ import CategoriesTable from "./components/categories_table";
 import { useProducts } from "./hooks/useProducts";
 import { useSuppliers } from "./hooks/useSuppliers";
 import { useCategories } from "./hooks/useCategories";
-import { useStockMovements } from "./hooks/useStockMovements";
-import StockMovementsTable from "./components/stock_movements_table";
+import { useStockMovements } from "./hooks/useInventory";
+import StockMovementsTable from "./components/inventory_table";
 
 type PanelView = "products" | "suppliers" | "categories" | "inventory";
 

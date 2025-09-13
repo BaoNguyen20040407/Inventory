@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
+import { Product } from './useProducts';
 
 export interface StockMovement {
-  id: number;       // MaNX
-  quantity: number; // SoLuong
-  productId: number; // MaSP
+  id: number;
+  quantity: number;
+  type: "Import" | "Export";
+  reason?: string;
+  created: string;
+  product: Product; // Thêm dòng này
 }
 
 export function useStockMovements() {
@@ -14,7 +18,7 @@ export function useStockMovements() {
   const fetchMovements = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:3000/stock-movements");
+      const res = await fetch("http://localhost:3000/inventory");
       const data = await res.json();
       setMovements(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -25,10 +29,10 @@ export function useStockMovements() {
     }
   };
 
-  // 📌 Thêm phiếu nhập/xuất kho
-  const addMovement = async (movement: Omit<StockMovement, "id">) => {
+  // Thêm phiếu nhập/xuất kho
+  const addMovement = async (movement: Omit<StockMovement, "id" | "created">) => {
     try {
-      const res = await fetch("http://localhost:3000/stock-movements", {
+      const res = await fetch("http://localhost:3000/inventory", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(movement),
@@ -39,11 +43,12 @@ export function useStockMovements() {
       console.error(err);
     }
   };
+  
 
   // 📌 Xóa phiếu nhập/xuất kho
   const deleteMovement = async (id: number) => {
     try {
-      await fetch(`http://localhost:3000/stock-movements/${id}`, {
+      await fetch(`http://localhost:3000/inventory/${id}`, {
         method: "DELETE",
       });
       setMovements((prev) => prev.filter((m) => m.id !== id));

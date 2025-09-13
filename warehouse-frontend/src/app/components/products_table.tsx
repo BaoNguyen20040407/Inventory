@@ -71,14 +71,14 @@ export default function ProductsTable({ products, loading, onUpdateQuantity }: P
           </tr>
         </thead>
         <tbody>
-          {products.length === 0 ? (
+          {filteredProducts.length === 0 ? (
             <tr>
               <td colSpan={7} style={{ textAlign: "center", padding: 20 }}>
                 Không có sản phẩm
               </td>
             </tr>
           ) : (
-            products.map((p) => (
+            filteredProducts.map((p) => (
               <tr key={p.id}>
                 <td>{p.id}</td>
                 <td>{p.name}</td>
