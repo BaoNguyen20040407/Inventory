@@ -24,11 +24,29 @@ export default function StockMovementsTable({ movements, loading, products }: Pr
     return <p style={{ padding: 16, color: "#6b7280" }}>Đang tải dữ liệu...</p>;
   }
 
-  const filteredInventory = movements.filter((m) =>
-    (m.product?.name || "").toLowerCase().includes(search.toLowerCase()) ||
-    (m.reason || "").toLowerCase().includes(search.toLowerCase()) ||
-    (m.type || "").toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredInventory = movements.filter((m) => {
+    const term = search.toLowerCase();
+  
+    // Chuyển ngày giờ phiếu thành string "dd/mm/yyyy"
+    const dateStr = new Date(m.created).toLocaleDateString("vi-VN");
+  
+    // Kiểm tra text search bình thường
+    const matchesText =
+      (m.product?.name || "").toLowerCase().includes(term) ||
+      (m.reason || "").toLowerCase().includes(term) ||
+      dateStr.includes(term);
+  
+    // Kiểm tra loại phiếu: nếu search là "nhập" hoặc "xuất" thì so với type
+    const matchesType =
+      term === "nhập" ? m.type === "Import" :
+      term === "xuất" ? m.type === "Export" :
+      false;
+  
+    // Nếu search trống thì trả về tất cả
+    if (!term) return true;
+  
+    return matchesText || matchesType;
+  });  
   
   const exportToExcel = () => {
     if (filteredInventory.length === 0) return;

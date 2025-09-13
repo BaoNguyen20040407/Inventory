@@ -87,7 +87,7 @@ export default function InventoryStatsPage() {
           <img
             src="https://static.vecteezy.com/system/resources/previews/004/891/075/non_2x/the-initials-w-logo-is-simple-and-modern8868-free-vector.jpg"
             alt="Logo"
-            style={{ width: "40px", height: "40px", objectFit: "contain", marginRight: 8 }}
+            style={{ width: "40px", height: "40px", objectFit: "contain", marginRight: 0 }}
           />
         </div>
         <h1 style={{ fontSize: "1.6rem", margin: 0, color: "#ffffff" }}>📊 Thống kê</h1>
