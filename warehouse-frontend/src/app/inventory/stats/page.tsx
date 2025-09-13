@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import { 
-  BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, 
-  PieChart, Pie, Cell 
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer,
+  PieChart, Pie, Cell
 } from "recharts";
 import { StockMovement } from "../../hooks/useInventory";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ export default function InventoryStatsPage() {
   const router = useRouter();
   const [movements, setMovements] = useState<StockMovement[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeView, setActiveView] = useState<"bar" | "pie" | null>(null);
+  const [activeView, setActiveView] = useState<"bar" | "pie" | "stock" | null>(null);
 
   useEffect(() => {
     const loadMovements = async () => {
@@ -32,9 +32,9 @@ export default function InventoryStatsPage() {
         setLoading(false);
       }
     };
-  
+
     loadMovements();
-  }, []);  
+  }, []);
 
   if (loading) {
     return <p style={{ padding: 20 }}>Đang tải thống kê...</p>;
@@ -66,84 +66,131 @@ export default function InventoryStatsPage() {
     value: byProduct[k],
   }));
 
+  // 👉 Tính tồn kho hiện tại theo sản phẩm
+  const stockByProduct: Record<string, number> = {};
+  movements.forEach((m) => {
+    const name = m.product?.name || "Khác";
+    if (!stockByProduct[name]) stockByProduct[name] = 0;
+    stockByProduct[name] += m.type === "Import" ? m.quantity : -m.quantity;
+  });
+
+  const stockData = Object.keys(stockByProduct).map((k) => ({
+    name: k,
+    tồn: stockByProduct[k],
+  }));
+
   return (
-    <div className="app-container" style={{ display: "flex", height: "100vh" }}>
-      {/* Sidebar bên trái */}
-      <aside style={{ width: 220, background: "#f5f5f5", padding: 16, borderRight: "1px solid #ddd" }}>
-        <h3 style={{ marginBottom: 20, textAlign: "center" }}>Chọn loại thống kê</h3>
-        <div 
-          style={{ padding: 12, marginBottom: 10, cursor: "pointer", borderRadius: 8, background: activeView === "bar" ? "#007bff" : "#fff", color: activeView === "bar" ? "#fff" : "#000", textAlign: "center" }}
-          onClick={() => setActiveView("bar")}
-        >
-          Số lượng phiếu nhập / xuất theo ngày
+    <div className="app-container">
+      {/* Header */}
+      <header className="app-header" style={{ display: "flex", alignItems: "center" }}>
+        <div className="logo">
+          <img
+            src="https://static.vecteezy.com/system/resources/previews/004/891/075/non_2x/the-initials-w-logo-is-simple-and-modern8868-free-vector.jpg"
+            alt="Logo"
+            style={{ width: "40px", height: "40px", objectFit: "contain", marginRight: 8 }}
+          />
         </div>
-        <div 
-          style={{ padding: 12, cursor: "pointer", borderRadius: 8, background: activeView === "pie" ? "#007bff" : "#fff", color: activeView === "pie" ? "#fff" : "#000", textAlign: "center" }}
-          onClick={() => setActiveView("pie")}
-        >
-          Tổng sản phẩm nhập / xuất theo sản phẩm
-        </div>
-      </aside>
+        <h1 style={{ fontSize: "1.6rem", margin: 0, color: "#ffffff" }}>📊 Thống kê</h1>
+      </header>
 
-      {/* Nội dung bên phải */}
-      <main style={{ flex: 1, padding: 24 }}>
-        <header className="app-header" style={{ display: "flex", alignItems: "center", marginBottom: 20 }}>
-          <div className="logo">
-            <img 
-              src="https://static.vecteezy.com/system/resources/previews/004/891/075/non_2x/the-initials-w-logo-is-simple-and-modern8868-free-vector.jpg" 
-              alt="Logo" 
-              style={{ width: "40px", height: "40px", objectFit: "contain", marginRight: 5, marginLeft: 7 }}
-            />
+      <div className="app-grid">
+        {/* LEFT menu */}
+        <aside className="left-panel">
+          <div
+            className={`panel-section ${activeView === "bar" ? "active" : ""}`}
+            onClick={() => setActiveView("bar")}
+          >
+            <h3>Số lượng phiếu nhập / xuất theo ngày</h3>
           </div>
-          <h1 style={{ fontSize: "1.6rem", margin: 0 }}>📊 Thống kê</h1>
-        </header>
-
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-    <h2 style={{ fontSize: 22, fontWeight: "bold", margin: 0 }}>📦 Thống kê nhập / xuất kho</h2>
-    <button 
-      type="button"
-      className="btn btn-gray"
-      onClick={() => router.push("/")}
-      style={{ padding: "6px 14px", borderRadius: "6px", cursor: "pointer", backgroundColor: "#008cffff", color: "#ffffffff" }}
-    >
-      Quay về
-    </button>
-  </div>
-
-        {/* Biểu đồ cột */}
-        {activeView === "bar" && (
-          <div style={{ height: 440, background: "white", borderRadius: 12, padding: 16 }}>
-            <h3 style={{ marginBottom: 12 }}>Số lượng phiếu nhập / xuất theo ngày</h3>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData}>
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="nhập" fill="#82ca9d" />
-                <Bar dataKey="xuất" fill="#8884d8" />
-              </BarChart>
-            </ResponsiveContainer>
+          <div
+            className={`panel-section ${activeView === "pie" ? "active" : ""}`}
+            onClick={() => setActiveView("pie")}
+          >
+            <h3>Tổng sản phẩm nhập / xuất theo sản phẩm</h3>
           </div>
-        )}
-
-        {/* Biểu đồ tròn */}
-        {activeView === "pie" && (
-          <div style={{ height: 440, background: "white", borderRadius: 12, padding: 16 }}>
-            <h3 style={{ marginBottom: 12 }}>Tổng sản phẩm nhập / xuất theo sản phẩm</h3>
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={pieData} dataKey="value" nameKey="name" label>
-                  {pieData.map((entry, index) => (
-                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+          <div
+            className={`panel-section ${activeView === "stock" ? "active" : ""}`}
+            onClick={() => setActiveView("stock")}
+          >
+            <h3>Tồn kho hiện tại theo sản phẩm</h3>
           </div>
-        )}
-      </main>
+        </aside>
+
+        {/* RIGHT content */}
+        <main className="right-panel">
+          <div className="table-card">
+            {/* Tiêu đề + quay về */}
+            <div style={{ display: "flex", alignItems: "center", marginBottom: 16 }}>
+              <h2 style={{ fontSize: 22, fontWeight: "bold", margin: 0 }}>
+                📦 Thống kê nhập / xuất kho
+              </h2>
+              <button
+                type="button"
+                onClick={() => router.push("/")}
+                style={{
+                  marginLeft: "auto",
+                  padding: "6px 14px",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                  backgroundColor: "#007bff",
+                  color: "#fff",
+                  border: "none",
+                  fontWeight: "bold",
+                }}
+              >
+                ⬅ Quay về
+              </button>
+            </div>
+
+            {activeView === "bar" && (
+              <div style={{ height: 440 }}>
+                <h3 style={{ marginBottom: 12 }}>Số lượng phiếu nhập / xuất theo ngày</h3>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartData}>
+                    <XAxis dataKey="date" tick={{ dy: 5 }} />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend verticalAlign="bottom" height={36} />
+                    <Bar dataKey="nhập" fill="#82ca9d" />
+                    <Bar dataKey="xuất" fill="#8884d8" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+
+            {activeView === "pie" && (
+              <div style={{ height: 440 }}>
+                <h3 style={{ marginBottom: 12 }}>Tổng sản phẩm nhập / xuất theo sản phẩm</h3>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={pieData} dataKey="value" nameKey="name" label>
+                      {pieData.map((entry, index) => (
+                        <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+
+            {activeView === "stock" && (
+              <div style={{ height: 440 }}>
+                <h3 style={{ marginBottom: 12 }}>Tồn kho hiện tại theo sản phẩm</h3>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={stockData}>
+                    <XAxis dataKey="name" tick={{ dy: 5 }} />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="tồn" fill="#ff8042" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
