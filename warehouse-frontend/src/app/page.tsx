@@ -77,6 +77,7 @@ export default function HomePage() {
               <StockMovementsTable
                 movements={stockMovementsHook.movements}
                 loading={stockMovementsHook.loading}
+                products={productsHook.products}   
               />
             )}
 
