@@ -16,4 +16,9 @@ export class InventoryController {
   async create(@Body() dto: CreateInventoryDto): Promise<Inventory> {
     return this.inventoryService.create(dto);
   }
+
+  @Get('movements')
+  async getMovements(): Promise<Inventory[]> {
+    return this.inventoryService.findAll();
+  }
 }

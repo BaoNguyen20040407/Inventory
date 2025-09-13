@@ -80,6 +80,24 @@ export default function StockMovementsTable({ movements, loading, products }: Pr
         >
           <span style={{fontSize: "18px"}}>-</span> Xuất hàng
         </button>
+
+        <button
+          onClick={() => router.push("/inventory/stats")}
+          style={{
+            backgroundColor: "#2563eb",
+            color: "white",
+            fontWeight: "bold",
+            padding: "8px 14px",
+            borderRadius: "6px",
+            border: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            cursor: "pointer",
+          }}
+        >
+          📊 Xem thống kê
+        </button>
       </div>
       <table>
         <thead>
