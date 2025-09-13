@@ -2,6 +2,8 @@
 import { useRouter } from "next/navigation";
 import { StockMovement } from "../hooks/useInventory";
 import { useState } from "react";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 interface Product {
   id: number;
@@ -26,7 +28,33 @@ export default function StockMovementsTable({ movements, loading, products }: Pr
     (m.product?.name || "").toLowerCase().includes(search.toLowerCase()) ||
     (m.reason || "").toLowerCase().includes(search.toLowerCase()) ||
     (m.type || "").toLowerCase().includes(search.toLowerCase())
-  );  
+  );
+  
+  const exportToExcel = () => {
+    if (filteredInventory.length === 0) return;
+  
+    // Chuyển dữ liệu thành dạng mảng object phù hợp Excel
+    const data = filteredInventory.map((m) => ({
+      "Mã phiếu": m.id,
+      "Sản phẩm": m.product?.name || "-",
+      "Số lượng": m.quantity,
+      "Loại": m.type === "Import" ? "Nhập" : "Xuất",
+      "Lý do": m.reason || "-",
+      "Ngày giờ": new Date(m.created).toLocaleString(),
+    }));
+  
+    // Tạo worksheet
+    const ws = XLSX.utils.json_to_sheet(data);
+  
+    // Tạo workbook và thêm worksheet
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "StockMovements");
+  
+    // Xuất file Excel
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    saveAs(new Blob([wbout], { type: "application/octet-stream" }), "StockMovements.xlsx");
+  };
+  
   
   return (
     <div className="table-wrapper">
@@ -97,6 +125,24 @@ export default function StockMovementsTable({ movements, loading, products }: Pr
           }}
         >
           📊 Xem thống kê
+        </button>
+
+        <button
+          onClick={exportToExcel}
+          style={{
+            backgroundColor: "#f59e0b",
+            color: "white",
+            fontWeight: "bold",
+            padding: "8px 14px",
+            borderRadius: "6px",
+            border: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            cursor: "pointer",
+          }}
+        >
+          📥 Xuất Excel
         </button>
       </div>
       <table>
