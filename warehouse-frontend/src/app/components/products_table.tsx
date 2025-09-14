@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { Product } from "../hooks/useProducts";
 import { useRouter } from "next/navigation";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 interface Props {
   products: Product[];
@@ -20,6 +22,31 @@ export default function ProductsTable({ products, loading, onUpdateQuantity }: P
     (s.category?.name || "").toLowerCase().includes(search.toLowerCase()) ||
     (s.supplier?.name || "").toLowerCase().includes(search.toLowerCase())
   );
+
+  const exportToExcel = () => {
+    if (filteredProducts.length === 0) return;
+
+    //Chuyển dữ liệu thành dạng mảng object phù hợp Excel
+    const data = filteredProducts.map((m) => ({
+      "Mã sản phẩm": m.id,
+      "Tên sản phẩm": m.name,
+      "Số lượng": m.quantity,
+      "Đơn giá": m.price,
+      "Loại sản phẩm": m.category?.name || "-",
+      "Nhà cung cấp": m.supplier?.name || "-",
+    }));
+
+    //Tạo worksheet
+    const ws = XLSX.utils.json_to_sheet(data);
+
+    //Tạo workbook và thêm worksheet
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Products");
+
+    //Xuất file Excel
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    saveAs(new Blob([wbout], { type: "application/octet-stream" }), "Products.xlsx");
+  }
 
   return (
     <div className="table-wrapper">
@@ -55,6 +82,24 @@ export default function ProductsTable({ products, loading, onUpdateQuantity }: P
           }}
         >
           <span style={{ fontSize: "18px" }}>+</span> Thêm
+        </button>
+
+        <button
+          onClick={exportToExcel}
+          style={{
+            backgroundColor: "#f59e0b",
+            color: "white",
+            fontWeight: "bold",
+            padding: "8px 14px",
+            borderRadius: "6px",
+            border: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            cursor: "pointer",
+          }}
+        >
+          📥 Xuất Excel
         </button>
       </div>
 
