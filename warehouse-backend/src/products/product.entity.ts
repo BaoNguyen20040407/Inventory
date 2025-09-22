@@ -2,6 +2,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Supplier } from '../supplier/supplier.entity';
 import { Category } from '../category/category.entity';
+import { Warehouse } from 'src/warehouse/warehouse.entity';
 
 @Entity('PRODUCT')
 export class Product {
@@ -24,4 +25,8 @@ export class Product {
   @ManyToOne(() => Supplier, supplier => supplier.products, { nullable: true })
   @JoinColumn({ name: 'supplier_id' })
   supplier: Supplier;
+
+  @ManyToOne(() => Warehouse, warehouse => warehouse.products, { nullable: true })
+  @JoinColumn({ name: 'warehouse_id' })
+  warehouse: Warehouse;
 }

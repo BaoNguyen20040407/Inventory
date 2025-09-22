@@ -8,6 +8,8 @@ import { SupplierModule } from './supplier/supplier.module';
 import { CategoryModule } from './category/category.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { Inventory } from './inventory/inventory.entity';
+import { Warehouse } from './warehouse/warehouse.entity';
+import { WarehouseModule } from './warehouse/warehouse.module';
 
 @Module({
   imports: [
@@ -18,13 +20,14 @@ import { Inventory } from './inventory/inventory.entity';
       username: 'root',
       password: '',
       database: 'warehouse',
-      entities: [Product, Category, Supplier, Inventory],
+      entities: [Product, Category, Supplier, Inventory, Warehouse],
       synchronize: false,
     }),
     ProductsModule,
     SupplierModule,
     CategoryModule,
     InventoryModule,
+    WarehouseModule
   ],
 })
 export class AppModule {}

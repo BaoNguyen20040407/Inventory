@@ -12,6 +12,11 @@ interface Supplier {
   name: string;
 }
 
+interface Warehouse {
+  id: number;
+  name: string;
+}
+
 export default function AddProductPage() {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -20,20 +25,25 @@ export default function AddProductPage() {
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+
   const [categoryId, setCategoryId] = useState<number | "">("");
   const [supplierId, setSupplierId] = useState<number | "">("");
+  const [warehouseId, setWarehouseId] = useState<number | "">("");
 
-  // ✅ Fetch categories & suppliers
+  // ✅ Fetch categories + suppliers + warehouse
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [catRes, supRes] = await Promise.all([
+        const [catRes, supRes, warRes] = await Promise.all([
           fetch("http://localhost:3000/categories"),
           fetch("http://localhost:3000/suppliers"),
+          fetch("http://localhost:3000/warehouse"),
         ]);
 
         if (catRes.ok) setCategories(await catRes.json());
         if (supRes.ok) setSuppliers(await supRes.json());
+        if (warRes.ok) setWarehouses(await warRes.json())
       } catch (err) {
         console.error("Lỗi khi load dữ liệu:", err);
       }
@@ -53,6 +63,7 @@ export default function AddProductPage() {
           quantity: Number(quantity),
           category: categoryId ? { id: categoryId } : null,
           supplier: supplierId ? { id: supplierId } : null,
+          warehouse: warehouseId ? { id: warehouseId }: null,
         }),
       });
   
@@ -143,6 +154,22 @@ export default function AddProductPage() {
                     </option>
                 ))}
                 </select>
+            
+            {/* Dropdown Warehouse */}
+            <select
+              value={warehouseId}
+              onChange={(e) => setWarehouseId(Number(e.target.value))}
+              className="form-input"
+              required
+            >
+              <option value="">-- Chọn kho hàng --</option>
+              {warehouses.map((w) => (
+                <option key={w.id} value={w.id}>
+                  {w.name}
+                </option>
+              ))}
+            </select>
+
 
             <div className="form-actions">
               <button type="submit" className="btn btn-green">

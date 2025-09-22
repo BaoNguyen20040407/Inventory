@@ -20,7 +20,8 @@ export default function ProductsTable({ products, loading, onUpdateQuantity }: P
     (s) =>
       s.name.toLowerCase().includes(search.toLowerCase()) ||
     (s.category?.name || "").toLowerCase().includes(search.toLowerCase()) ||
-    (s.supplier?.name || "").toLowerCase().includes(search.toLowerCase())
+    (s.supplier?.name || "").toLowerCase().includes(search.toLowerCase()) ||
+    (s.warehouse?.name || "").toLowerCase().includes(search.toLowerCase())
   );
 
   const exportToExcel = () => {
@@ -34,6 +35,7 @@ export default function ProductsTable({ products, loading, onUpdateQuantity }: P
       "Đơn giá": m.price,
       "Loại sản phẩm": m.category?.name || "-",
       "Nhà cung cấp": m.supplier?.name || "-",
+      "Kho hàng": m.warehouse?.name || "-"
     }));
 
     //Tạo worksheet
@@ -110,8 +112,7 @@ export default function ProductsTable({ products, loading, onUpdateQuantity }: P
             <th>Tên sản phẩm</th>
             <th>Số lượng</th>
             <th>Đơn giá</th>
-            <th>Loại</th>
-            <th>Nhà cung cấp</th>
+            <th>Kho hàng</th>
             <th>Hành động</th>
           </tr>
         </thead>
@@ -129,8 +130,7 @@ export default function ProductsTable({ products, loading, onUpdateQuantity }: P
                 <td>{p.name}</td>
                 <td>{p.quantity}</td>
                 <td>{Number(p.price).toLocaleString("vi-VN", { maximumFractionDigits: 0 })} VND</td>
-                <td>{p.category?.name || "-"}</td>
-                <td>{p.supplier?.name || "-"}</td>
+                <td>{p.warehouse?.name || "-"}</td>
                 <td>
                 <button 
                   className="btn-small btn-green"

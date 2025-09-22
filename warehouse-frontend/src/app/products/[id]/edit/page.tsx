@@ -12,9 +12,11 @@ export default function EditProductPage() {
   const [quantity, setQuantity] = useState<number>(0);
   const [supplierId, setSupplierId] = useState<number | "">("");
   const [categoryId, setCategoryId] = useState<number | "">("");
+  const [warehouseId, setWarehouseId] = useState<number | "">("");
 
   const [suppliers, setSuppliers] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
+  const [warehouse, setWarehouse] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Lấy dữ liệu sản phẩm cần sửa
@@ -24,13 +26,15 @@ export default function EditProductPage() {
     const fetchData = async () => {
       try {
         // lấy danh sách supplier và category
-        const [supRes, catRes] = await Promise.all([
+        const [supRes, catRes, warRes] = await Promise.all([
           fetch("http://localhost:3000/suppliers"),
           fetch("http://localhost:3000/categories"),
+          fetch("http://localhost:3000/warehouse"),
         ]);
 
         setSuppliers(await supRes.json());
         setCategories(await catRes.json());
+        setWarehouse(await warRes.json());
 
         // lấy thông tin sản phẩm
         const res = await fetch(`http://localhost:3000/products/${id}`);
@@ -42,6 +46,7 @@ export default function EditProductPage() {
         setQuantity(Number(data.quantity) || 0);
         setSupplierId(data.supplier?.id || "");
         setCategoryId(data.category?.id || "");
+        setWarehouseId(data.warehouse?.id || "");
       } catch (err) {
         console.error(err);
         alert("Lỗi khi tải dữ liệu sản phẩm");
@@ -66,6 +71,7 @@ export default function EditProductPage() {
           quantity,
           supplier: supplierId ? { id: supplierId } : null,
           category: categoryId ? { id: categoryId } : null,
+          warehouse: warehouseId ? { id: warehouseId } : null,
         }),
       });
 
@@ -153,6 +159,21 @@ export default function EditProductPage() {
               {suppliers.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name}
+                </option>
+              ))}
+            </select>
+
+            {/* Dropdown Warehouse */}
+            <select
+              value={warehouseId}
+              onChange={(e) => setWarehouseId(Number(e.target.value))}
+              className="form-input"
+              required
+            >
+              <option value="">-- Chọn kho hàng --</option>
+              {warehouse.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
                 </option>
               ))}
             </select>

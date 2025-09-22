@@ -3,13 +3,15 @@ import { useState } from "react";
 import ProductsTable from "./components/products_table";
 import SuppliersTable from "./components/suppliers_table";
 import CategoriesTable from "./components/categories_table";
+import StockMovementsTable from "./components/inventory_table";
 import { useProducts } from "./hooks/useProducts";
 import { useSuppliers } from "./hooks/useSuppliers";
 import { useCategories } from "./hooks/useCategories";
 import { useStockMovements } from "./hooks/useInventory";
-import StockMovementsTable from "./components/inventory_table";
+import { useWarehouse } from "./hooks/useWarehouse";
+import WarehouseTabole from "./components/warehouse_table";
 
-type PanelView = "products" | "suppliers" | "categories" | "inventory";
+type PanelView = "products" | "suppliers" | "categories" | "inventory" | "warehouse";
 
 export default function HomePage() {
   const [activeView, setActiveView] = useState<PanelView>("products");
@@ -18,6 +20,7 @@ export default function HomePage() {
   const suppliersHook = useSuppliers();
   const categoriesHook = useCategories();
   const stockMovementsHook = useStockMovements();
+  const warehouseHook = useWarehouse();
 
   return (
     <div className="app-container">
@@ -38,6 +41,9 @@ export default function HomePage() {
           </div>
           <div className={`panel-section ${activeView === "categories" ? "active" : ""}`} onClick={() => setActiveView("categories")}>
             <h3>Loại sản phẩm</h3>
+          </div>
+          <div className={`panel-section ${activeView === "warehouse" ? "active" : ""}`} onClick={() => setActiveView("warehouse")}>
+            <h3>Kho hàng</h3>
           </div>
           <div className={`panel-section ${activeView === "products" ? "active" : ""}`} onClick={() => setActiveView("products")}>
             <h3>Sản phẩm</h3>
@@ -69,7 +75,15 @@ export default function HomePage() {
               <CategoriesTable
                 categories={categoriesHook.categories}
                 loading={categoriesHook.loading}
-                onDelete={categoriesHook.deleteCategory}   // ✅ Thêm dòng này
+                onDelete={categoriesHook.deleteCategory}
+              />
+            )}
+
+            {activeView === "warehouse" && (
+              <WarehouseTabole
+                warehouse={warehouseHook.warehouse}
+                loading={warehouseHook.loading}
+                onDelete={warehouseHook.deleteCategory}
               />
             )}
 
