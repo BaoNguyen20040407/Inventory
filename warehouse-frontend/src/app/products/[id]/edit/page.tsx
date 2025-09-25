@@ -130,8 +130,7 @@ export default function EditProductPage() {
               type="number"
               placeholder="Số lượng"
               value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-              required
+              readOnly
               className="form-input"
             />
 

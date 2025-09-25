@@ -6,6 +6,7 @@ import {
 } from "recharts";
 import { StockMovement } from "../../hooks/useInventory";
 import { useRouter } from "next/navigation";
+import { setDefaultAutoSelectFamily } from "net";
 
 const COLORS = ["#82ca9d", "#8884d8", "#ff8042", "#ffbb28"];
 
@@ -13,7 +14,7 @@ export default function InventoryStatsPage() {
   const router = useRouter();
   const [movements, setMovements] = useState<StockMovement[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeView, setActiveView] = useState<"bar" | "pie" | "stock" | null>(null);
+  const [activeView, setActiveView] = useState<"bar" | "pie" | "stock" | "summary" | null>(null);
 
   //Thêm state cho ngày lọc
   const [startDate, setStartDate] = useState<string>("");
@@ -97,6 +98,21 @@ export default function InventoryStatsPage() {
     tồn: stockByProduct[k],
   }));
 
+  let summaryImport = 0;
+  let summaryExport = 0;
+
+  //Đếm số phiếu nhập/ xuất kho
+  movements.forEach((m) => {
+    const itemDate = new Date(m.created);
+    const start = startDate ? new Date (startDate) : null;
+    const end = endDate ? new Date (endDate) : null;
+
+    if ((!start || itemDate >= start) && (!end || itemDate <= end)) {
+      if(m.type === "Import") summaryImport += 1;
+        else if (m.type === "Export") summaryExport += 1;
+    }
+  })
+
   return (
     <div className="app-container">
       {/* Header */}
@@ -131,6 +147,12 @@ export default function InventoryStatsPage() {
             onClick={() => setActiveView("stock")}
           >
             <h3>Tồn kho hiện tại theo sản phẩm</h3>
+          </div>
+          <div
+            className={`panel-section ${activeView === "summary" ? "active" : ""}`}
+            onClick={() => setActiveView("summary")}
+          >
+            <h3>Tổng số phiếu nhập/ xuất kho</h3>
           </div>
         </aside>
 
@@ -262,6 +284,61 @@ export default function InventoryStatsPage() {
                     <Legend />
                     <Bar dataKey="tồn" fill="#ff8042" />
                   </BarChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+
+            {activeView === "summary" && (
+              <div style={{ height: 400 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <h3 style={{ margin: 0 }}>Tổng số phiếu nhập / xuất theo thời gian</h3>
+
+                  <div style={{ display: "flex", gap: 12 }}>
+                    <div>
+                      <label style={{ marginRight: 4 }}>Bắt đầu:</label>
+                      <input
+                        type="date"
+                        value={startDate || ""}
+                        onChange={(e) => setStartDate(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ marginRight: 4 }}>Kết thúc:</label>
+                      <input
+                        type="date"
+                        value={endDate || ""}
+                        onChange={(e) => setEndDate(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { name: "Phiếu nhập", value: summaryImport },
+                        { name: "Phiếu xuất", value: summaryExport },
+                      ]}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={140}
+                      label
+                    >
+                      <Cell fill="#82ca9d" /> {/* Nhập */}
+                      <Cell fill="#8884d8" /> {/* Xuất */}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
                 </ResponsiveContainer>
               </div>
             )}
