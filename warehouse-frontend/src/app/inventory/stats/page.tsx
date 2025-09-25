@@ -15,6 +15,13 @@ export default function InventoryStatsPage() {
   const [loading, setLoading] = useState(true);
   const [activeView, setActiveView] = useState<"bar" | "pie" | "stock" | null>(null);
 
+  //Thêm state cho ngày lọc
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+
+  //Sản phẩm
+  const [productFilter, setProductFilter] = useState("");
+
   useEffect(() => {
     const loadMovements = async () => {
       try {
@@ -48,11 +55,22 @@ export default function InventoryStatsPage() {
     byDate[day][m.type] += 1;
   });
 
-  const chartData = Object.keys(byDate).map((d) => ({
+  let chartData = Object.keys(byDate).map((d) => ({
     date: d,
     nhập: byDate[d].Import,
     xuất: byDate[d].Export,
   }));
+
+  //Lọc theo khoảng ngày
+  if (startDate || endDate) {
+    chartData = chartData.filter((item) => {
+      const itemDate = new Date(item.date.split("/").reverse().join("-"));
+      const start = startDate ? new Date(startDate) : null;
+      const end = endDate ? new Date(endDate) : null;
+
+      return (!start || itemDate >= start) && (!end || itemDate <= end);
+    })
+  }
 
   // Gom tổng sản phẩm nhập/xuất theo tên sản phẩm
   const byProduct: Record<string, number> = {};
@@ -143,36 +161,95 @@ export default function InventoryStatsPage() {
             </div>
 
             {activeView === "bar" && (
-              <div style={{ height: 440 }}>
-                <h3 style={{ marginBottom: 12 }}>Số lượng phiếu nhập / xuất theo ngày</h3>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData}>
-                    <XAxis dataKey="date" tick={{ dy: 5 }} />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend verticalAlign="bottom" height={36} />
-                    <Bar dataKey="nhập" fill="#82ca9d" />
-                    <Bar dataKey="xuất" fill="#8884d8" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            )}
+            <div style={{ height: 480 }}>
+              {/* 🟢 Tiêu đề + ô nhập ngày trên cùng một hàng */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: 16,
+                }}
+              >
+                <h3 style={{ margin: 0 }}>Số lượng phiếu nhập / xuất theo ngày</h3>
 
-            {activeView === "pie" && (
-              <div style={{ height: 440 }}>
-                <h3 style={{ marginBottom: 12 }}>Tổng sản phẩm nhập / xuất theo sản phẩm</h3>
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie data={pieData} dataKey="value" nameKey="name" label>
-                      {pieData.map((entry, index) => (
+                <div style={{ display: "flex", gap: 12 }}>
+                  <div>
+                    <label style={{ marginRight: 4 }}>Bắt đầu:</label>
+                    <input
+                      type="date"
+                      value={startDate || ""}
+                      onChange={(e) => setStartDate(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ marginRight: 4 }}>Kết thúc:</label>
+                    <input
+                      type="date"
+                      value={endDate || ""}
+                      onChange={(e) => setEndDate(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData}>
+                  <XAxis dataKey="date" tick={{ dy: 5 }} />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend verticalAlign="bottom" height={36} />
+                  <Bar dataKey="nhập" fill="#82ca9d" />
+                  <Bar dataKey="xuất" fill="#8884d8" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+
+          {activeView === "pie" && (
+            <div style={{ height: 440 }}>
+              <div style={{ marginBottom: -12 }}>
+                <h3 style={{ margin: 0, marginBottom: 8 }}>
+                  Tổng sản phẩm nhập / xuất theo sản phẩm
+                </h3>
+                <input
+                  type="text"
+                  placeholder="Nhập tên sản phẩm..."
+                  value={productFilter}
+                  onChange={(e) => setProductFilter(e.target.value)}
+                  style={{
+                    width: "100%",      
+                    maxWidth: "300px",    
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                    border: "1px solid #ccc",
+                    fontSize: "14px",
+                  }}
+                />
+              </div>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={pieData.filter((item) =>
+                      item.name.toLowerCase().includes(productFilter.toLowerCase())
+                    )}
+                    dataKey="value"
+                    nameKey="name"
+                    label
+                  >
+                    {pieData
+                      .filter((item) =>
+                        item.name.toLowerCase().includes(productFilter.toLowerCase())
+                      )
+                      .map((entry, index) => (
                         <Cell key={index} fill={COLORS[index % COLORS.length]} />
                       ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            )}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          )}
 
             {activeView === "stock" && (
               <div style={{ height: 440 }}>

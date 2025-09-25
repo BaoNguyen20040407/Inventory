@@ -87,6 +87,23 @@ export default function ProductsTable({ products, loading, onUpdateQuantity }: P
         </button>
 
         <button
+          onClick={() => router.push("/products/by-warehouse")}
+          style={{
+            backgroundColor: "#3b82f6",
+            color: "white",
+            fontWeight: "bold",
+            padding: "8px 14px",
+            borderRadius: "6px",
+            border: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            cursor: "pointer"
+          }}>
+            <span style={{ fontSize: "18px" }}>🏬</span> Xem theo kho hàng
+          </button>
+
+        <button
           onClick={exportToExcel}
           style={{
             backgroundColor: "#f59e0b",
