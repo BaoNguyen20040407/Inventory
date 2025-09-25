@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { format } from "path";
 
 interface Category {
   id: number;
@@ -20,7 +21,7 @@ interface Warehouse {
 export default function AddProductPage() {
   const router = useRouter();
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState<number>(0);
   const [quantity, setQuantity] = useState("0");
 
   const [categories, setCategories] = useState<Category[]>([]);
@@ -30,6 +31,10 @@ export default function AddProductPage() {
   const [categoryId, setCategoryId] = useState<number | "">("");
   const [supplierId, setSupplierId] = useState<number | "">("");
   const [warehouseId, setWarehouseId] = useState<number | "">("");
+
+  //Hàm format tiền
+  const formatPrice = (value: number) =>
+    value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
   // ✅ Fetch categories + suppliers + warehouse
   useEffect(() => {
@@ -108,12 +113,16 @@ export default function AddProductPage() {
             />
 
             <input
-                type="number"
-                placeholder="Đơn giá"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                required
-                className="form-input"
+              type="text"
+              placeholder="Giá"
+              value={formatPrice(price)}
+              onChange={(e) => {
+                const raw = e.target.value.replace(/\./g, ""); // bỏ dấu chấm
+                const num = Number(raw) || 0;
+                setPrice(num);
+              }}
+              required
+              className="form-input"
             />
 
             <input

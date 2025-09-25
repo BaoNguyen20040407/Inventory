@@ -19,6 +19,10 @@ export default function EditProductPage() {
   const [warehouse, setWarehouse] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  //Hàm format tiền
+  const formatPrice = (value: number) =>
+    value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
   // Lấy dữ liệu sản phẩm cần sửa
   useEffect(() => {
     if (!id) return;
@@ -120,8 +124,12 @@ export default function EditProductPage() {
             <input
               type="number"
               placeholder="Giá"
-              value={price}
-              onChange={(e) => setPrice(Number(e.target.value))}
+              value={formatPrice(price)}
+              onChange={(e) => {
+                const raw = e.target.value.replace(/\./g, ""); // bỏ dấu chấm
+                const num = Number(raw) || 0;
+                setPrice(num);
+              }}
               required
               className="form-input"
             />
