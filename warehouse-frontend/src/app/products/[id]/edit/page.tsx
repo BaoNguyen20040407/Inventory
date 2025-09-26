@@ -13,10 +13,12 @@ export default function EditProductPage() {
   const [supplierId, setSupplierId] = useState<number | "">("");
   const [categoryId, setCategoryId] = useState<number | "">("");
   const [warehouseId, setWarehouseId] = useState<number | "">("");
+  const [unitId, setUnitId] = useState<number | "">("");
 
   const [suppliers, setSuppliers] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [warehouse, setWarehouse] = useState<any[]>([]);
+  const [units, setUnits] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   //Hàm format tiền
@@ -30,15 +32,17 @@ export default function EditProductPage() {
     const fetchData = async () => {
       try {
         // lấy danh sách supplier và category
-        const [supRes, catRes, warRes] = await Promise.all([
+        const [supRes, catRes, warRes, unitRes] = await Promise.all([
           fetch("http://localhost:3000/suppliers"),
           fetch("http://localhost:3000/categories"),
           fetch("http://localhost:3000/warehouse"),
+          fetch("http://localhost:3000/unit"),
         ]);
 
         setSuppliers(await supRes.json());
         setCategories(await catRes.json());
         setWarehouse(await warRes.json());
+        setUnits(await unitRes.json());
 
         // lấy thông tin sản phẩm
         const res = await fetch(`http://localhost:3000/products/${id}`);
@@ -51,6 +55,7 @@ export default function EditProductPage() {
         setSupplierId(data.supplier?.id || "");
         setCategoryId(data.category?.id || "");
         setWarehouseId(data.warehouse?.id || "");
+        setUnitId(data.unit?.id || "");
       } catch (err) {
         console.error(err);
         alert("Lỗi khi tải dữ liệu sản phẩm");
@@ -76,6 +81,7 @@ export default function EditProductPage() {
           supplier: supplierId ? { id: supplierId } : null,
           category: categoryId ? { id: categoryId } : null,
           warehouse: warehouseId ? { id: warehouseId } : null,
+          unit: unitId ? { id: unitId } : null,
         }),
       });
 
@@ -141,6 +147,20 @@ export default function EditProductPage() {
               readOnly
               className="form-input"
             />
+
+            {/* Dropdown chọn đơn vị tính */}
+            <select
+              value={unitId}
+              onChange={(e) => setUnitId(Number(e.target.value))}
+              className="form-input"
+            >
+              <option value="">-- Chọn đơn vị tính --</option>
+              {units.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
 
             {/* Dropdown chọn loại sản phẩm */}
             <select

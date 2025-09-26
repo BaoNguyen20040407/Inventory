@@ -7,7 +7,8 @@ export interface Product {
   price: number;
   category?: { id: number; name: string };
   supplier?: { id: number; name: string };
-  warehouse?: { id: number; name: string};
+  warehouse?: { id: number; name: string };
+  unit?: { id: number; name: string }
 }
 
 export function useProducts() {

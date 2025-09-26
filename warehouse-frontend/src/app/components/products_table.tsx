@@ -21,7 +21,8 @@ export default function ProductsTable({ products, loading, onUpdateQuantity }: P
       s.name.toLowerCase().includes(search.toLowerCase()) ||
     (s.category?.name || "").toLowerCase().includes(search.toLowerCase()) ||
     (s.supplier?.name || "").toLowerCase().includes(search.toLowerCase()) ||
-    (s.warehouse?.name || "").toLowerCase().includes(search.toLowerCase())
+    (s.warehouse?.name || "").toLowerCase().includes(search.toLowerCase()) ||
+    (s.unit?.name || "").toLowerCase().includes(search.toLowerCase())
   );
 
   const exportToExcel = () => {
@@ -34,6 +35,7 @@ export default function ProductsTable({ products, loading, onUpdateQuantity }: P
       "Số lượng": m.quantity,
       "Đơn giá": m.price,
       "Loại sản phẩm": m.category?.name || "-",
+      "Đơn ví tính": m.unit?.name || "-",
       "Nhà cung cấp": m.supplier?.name || "-",
       "Kho hàng": m.warehouse?.name || "-"
     }));

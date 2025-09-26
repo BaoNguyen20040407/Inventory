@@ -10,8 +10,10 @@ import { useCategories } from "./hooks/useCategories";
 import { useStockMovements } from "./hooks/useInventory";
 import { useWarehouse } from "./hooks/useWarehouse";
 import WarehouseTabole from "./components/warehouse_table";
+import { useUnits } from "./hooks/useUnits";
+import UnitsTable from "./components/units_table";
 
-type PanelView = "products" | "suppliers" | "categories" | "inventory" | "warehouse";
+type PanelView = "products" | "suppliers" | "categories" | "inventory" | "warehouse" | "units";
 
 export default function HomePage() {
   const [activeView, setActiveView] = useState<PanelView>("products");
@@ -21,6 +23,7 @@ export default function HomePage() {
   const categoriesHook = useCategories();
   const stockMovementsHook = useStockMovements();
   const warehouseHook = useWarehouse();
+  const unitHook = useUnits();
 
   return (
     <div className="app-container">
@@ -41,6 +44,9 @@ export default function HomePage() {
           </div>
           <div className={`panel-section ${activeView === "categories" ? "active" : ""}`} onClick={() => setActiveView("categories")}>
             <h3>Loại sản phẩm</h3>
+          </div>
+          <div className={`panel-section ${activeView === "units" ? "active" : ""}`} onClick={() => setActiveView("units")}>
+            <h3>Đơn vị tính</h3>
           </div>
           <div className={`panel-section ${activeView === "warehouse" ? "active" : ""}`} onClick={() => setActiveView("warehouse")}>
             <h3>Kho hàng</h3>
@@ -69,6 +75,13 @@ export default function HomePage() {
                 suppliers={suppliersHook.suppliers} 
                 loading={suppliersHook.loading}
                 deleteSupplier={suppliersHook.deleteSupplier} />
+            )}
+
+            {activeView === "units" && (
+              <UnitsTable 
+                units={unitHook.units} 
+                loading={unitHook.loading}
+                onDelete={unitHook.deleteUnit} />
             )}
 
             {activeView === "categories" && (

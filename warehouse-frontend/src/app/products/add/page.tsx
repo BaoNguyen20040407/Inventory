@@ -18,6 +18,11 @@ interface Warehouse {
   name: string;
 }
 
+interface Unit {
+  id: number;
+  name: string;
+}
+
 export default function AddProductPage() {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -27,10 +32,12 @@ export default function AddProductPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+  const [units, setUnits] = useState<Unit[]>([]);
 
   const [categoryId, setCategoryId] = useState<number | "">("");
   const [supplierId, setSupplierId] = useState<number | "">("");
   const [warehouseId, setWarehouseId] = useState<number | "">("");
+  const [unitId, setUnitId] = useState<number | "">("");
 
   //Hàm format tiền
   const formatPrice = (value: number) =>
@@ -40,15 +47,17 @@ export default function AddProductPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [catRes, supRes, warRes] = await Promise.all([
+        const [catRes, supRes, warRes, unitRes] = await Promise.all([
           fetch("http://localhost:3000/categories"),
           fetch("http://localhost:3000/suppliers"),
           fetch("http://localhost:3000/warehouse"),
+          fetch("http://localhost:3000/unit")
         ]);
 
         if (catRes.ok) setCategories(await catRes.json());
         if (supRes.ok) setSuppliers(await supRes.json());
-        if (warRes.ok) setWarehouses(await warRes.json())
+        if (warRes.ok) setWarehouses(await warRes.json());
+        if (unitRes.ok) setUnits(await unitRes.json());
       } catch (err) {
         console.error("Lỗi khi load dữ liệu:", err);
       }
@@ -68,7 +77,8 @@ export default function AddProductPage() {
           quantity: Number(quantity),
           category: categoryId ? { id: categoryId } : null,
           supplier: supplierId ? { id: supplierId } : null,
-          warehouse: warehouseId ? { id: warehouseId }: null,
+          warehouse: warehouseId ? { id: warehouseId } : null,
+          unit: unitId ? { id: unitId } : null
         }),
       });
   
@@ -133,6 +143,21 @@ export default function AddProductPage() {
                 required
                 className="form-input"
             />
+
+            {/* Dropdown Unit */}
+            <select
+              value={unitId}
+              onChange={(e) => setUnitId(Number(e.target.value))}
+              className="form-input"
+              required
+            >
+              <option value="">-- Chọn loại đơn vị tính --</option>
+              {units.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
 
             {/* Dropdown Category */}
             <select

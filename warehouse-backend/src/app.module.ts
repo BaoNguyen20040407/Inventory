@@ -10,6 +10,8 @@ import { InventoryModule } from './inventory/inventory.module';
 import { Inventory } from './inventory/inventory.entity';
 import { Warehouse } from './warehouse/warehouse.entity';
 import { WarehouseModule } from './warehouse/warehouse.module';
+import { Unit } from './unit/unit.entity';
+import { UnitModule } from './unit/unit.module';
 
 @Module({
   imports: [
@@ -20,14 +22,15 @@ import { WarehouseModule } from './warehouse/warehouse.module';
       username: 'root',
       password: '',
       database: 'warehouse',
-      entities: [Product, Category, Supplier, Inventory, Warehouse],
+      entities: [Product, Category, Supplier, Inventory, Warehouse, Unit],
       synchronize: false,
     }),
     ProductsModule,
     SupplierModule,
     CategoryModule,
     InventoryModule,
-    WarehouseModule
+    WarehouseModule,
+    UnitModule,
   ],
 })
 export class AppModule {}
