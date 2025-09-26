@@ -96,7 +96,7 @@ export default function HomePage() {
               <WarehouseTabole
                 warehouse={warehouseHook.warehouse}
                 loading={warehouseHook.loading}
-                onDelete={warehouseHook.deleteCategory}
+                onDelete={warehouseHook.deleteWarehouse}
               />
             )}
 

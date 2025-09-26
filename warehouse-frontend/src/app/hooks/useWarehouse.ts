@@ -27,7 +27,7 @@ export function useWarehouse() {
     }
 
     // Thêm loại sản phẩm
-  const addCategory = async (category: Omit<Warehouse, "id">) => {
+  const addWarehouse = async (category: Omit<Warehouse, "id">) => {
     try {
       const res = await fetch("http://localhost:3000/warehouse", {
         method: "POST",
@@ -42,7 +42,7 @@ export function useWarehouse() {
   };
 
   // Xóa loại sản phẩm
-  const deleteCategory = async (id: number) => {
+  const deleteWarehouse = async (id: number) => {
     try {
       await fetch(`http://localhost:3000/warehouse/${id}`, {
         method: "DELETE",
@@ -57,6 +57,6 @@ export function useWarehouse() {
     fetchWarehouse();
   }, []);
 
-  return { warehouse, loading, fetchWarehouse, addCategory, deleteCategory };
+  return { warehouse, loading, fetchWarehouse, addWarehouse, deleteWarehouse };
 
 }
