@@ -4,6 +4,8 @@ import { StockMovement } from "../hooks/useInventory";
 import { useState } from "react";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 interface Product {
   id: number;
@@ -47,6 +49,21 @@ export default function StockMovementsTable({ movements, loading, products }: Pr
   
     return matchesText || matchesType;
   });  
+
+  //Xuất phiếu PDF
+  const exportToPDF = async (element: HTMLElement, filename: string) => {
+    const canvas = await html2canvas(element, { scale: 2 });
+    const imgData = canvas.toDataURL("image/png");
+  
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const imgWidth = pageWidth - 20;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  
+    pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+    pdf.save(filename);
+  };
+  
   
   const exportToExcel = () => {
     if (filteredInventory.length === 0) return;
@@ -172,6 +189,7 @@ export default function StockMovementsTable({ movements, loading, products }: Pr
             <th>Loại</th>
             <th>Lý do</th>
             <th>Ngày giờ</th>
+            <th>Hành động</th>
           </tr>
         </thead>
         <tbody>
@@ -190,6 +208,82 @@ export default function StockMovementsTable({ movements, loading, products }: Pr
                 <td>{m.type === "Import" ? "Nhập" : "Xuất"}</td>
                 <td>{m.reason || "-"}</td>
                 <td>{new Date(m.created).toLocaleString()}</td>
+                <td>
+                <button
+                  onClick={async () => {
+                    // Tạo div ẩn chứa layout phiếu
+                    const temp = document.createElement("div");
+                    temp.style.padding = "24px";
+                    temp.style.background = "white";
+                    temp.style.width = "600px"; // để PDF có layout đẹp
+                    
+                    temp.innerHTML = `
+                      <div style="text-align:center; margin-bottom:20px;">
+                        <h2 style="margin:0;">CÔNG TY TNHH ABC</h2>
+                        <p style="margin:0;">Địa chỉ: 75/1 Nghĩa Hòa, phường Tân Hòa, Thành phố Hồ Chí Minh</p>
+                        <hr style="margin-top:10px;"/>
+                      </div>
+
+                      <h3 style="text-align:center; margin:20px 0;">
+                        PHIẾU ${m.type === "Import" ? "NHẬP" : "XUẤT"} KHO
+                      </h3>
+
+                      <p><b>Ngày lập phiếu:</b> ${new Date(m.created).toLocaleString("vi-VN")}</p>
+
+                      <table style="width:100%; border-collapse:collapse; margin:20px 0;">
+                        <thead>
+                          <tr>
+                            <th style="border:1px solid #000; padding:8px; text-align:center;">STT</th>
+                            <th style="border:1px solid #000; padding:8px; text-align:center;">Tên sản phẩm</th>
+                            <th style="border:1px solid #000; padding:8px; text-align:center;">Số lượng</th>
+                            <th style="border:1px solid #000; padding:8px; text-align:center;">Lý do</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td style="border:1px solid #000; padding:8px; text-align:center;">1</td>
+                            <td style="border:1px solid #000; padding:8px;">${m.product?.name || "-"}</td>
+                            <td style="border:1px solid #000; padding:8px; text-align:right;">${m.quantity}</td>
+                            <td style="border:1px solid #000; padding:8px;">${m.reason || "-"}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                      <div style="display:flex; justify-content:space-between; margin-top:40px; text-align:center;">
+                        <div style="width:30%;">
+                          <b>Người lập phiếu</b><br/>
+                          (Ký, ghi rõ họ tên)
+                        </div>
+                        <div style="width:30%;">
+                          <b>Thủ kho</b><br/>
+                          (Ký, ghi rõ họ tên)
+                        </div>
+                        <div style="width:30%;">
+                          <b>Người duyệt</b><br/>
+                          (Ký, ghi rõ họ tên)
+                        </div>
+                      </div>
+                    `;
+
+                    document.body.appendChild(temp);
+
+                    await exportToPDF(temp, `Phieu_${m.id}.pdf`);
+
+                    document.body.removeChild(temp);
+                  }}
+                  style={{
+                    background: "#f59e0b",
+                    color: "white",
+                    border: "none",
+                    padding: "4px 8px",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Xuất PDF
+                </button>
+              </td>
               </tr>
             ))
           )}
