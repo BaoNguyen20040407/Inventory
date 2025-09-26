@@ -102,7 +102,7 @@ export default function ProductsTable({ products, loading, onUpdateQuantity }: P
             gap: "6px",
             cursor: "pointer"
           }}>
-            <span style={{ fontSize: "18px" }}>🏬</span> Xem theo kho hàng
+            📊 Xem theo kho hàng
           </button>
 
         <button
