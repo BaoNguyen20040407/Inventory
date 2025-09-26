@@ -59,6 +59,14 @@ export default function ProductsByWarehouse() {
           </div>
           <div
             className={`panel-section ${
+              activeView === "unit" ? "active" : ""
+            }`}
+            onClick={() => setActiveView("unit")}
+          >
+            <h3>Đơn vị tính</h3>
+          </div>
+          <div
+            className={`panel-section ${
               activeView === "warehouse" ? "active" : ""
             }`}
             onClick={() => setActiveView("warehouse")}
