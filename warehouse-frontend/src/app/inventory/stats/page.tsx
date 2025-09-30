@@ -14,7 +14,7 @@ export default function InventoryStatsPage() {
   const router = useRouter();
   const [movements, setMovements] = useState<StockMovement[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeView, setActiveView] = useState<"bar" | "pie" | "stock" | "summary" | null>(null);
+  const [activeView, setActiveView] = useState<"bar" | "pie" | "stock" | "summary" | "value" | null>(null);
 
   //Thêm state cho ngày lọc
   const [startDate, setStartDate] = useState<string>("");
@@ -113,6 +113,24 @@ export default function InventoryStatsPage() {
     }
   })
 
+  //Tính tổng giá trị nhập/ xuất
+  let totalImportValue = 0;
+  let totalExportValue = 0;
+
+  movements.forEach((m) => {
+    const itemDate = new Date(m.created);
+    const start = startDate ? new Date(startDate) : null;
+    const end = endDate ? new Date(endDate) : null;
+
+    if((!start || itemDate >= start) && (!end || itemDate <= end)) {
+      const unitPrice = m.product?.price || 0;
+      const total = m.quantity * unitPrice;
+      
+      if(m.type === "Import") totalImportValue += total;
+      else if (m.type === "Export") totalExportValue += total;
+    }
+  });
+
   return (
     <div className="app-container">
       {/* Header */}
@@ -153,6 +171,12 @@ export default function InventoryStatsPage() {
             onClick={() => setActiveView("summary")}
           >
             <h3>Tổng số phiếu nhập/ xuất kho</h3>
+          </div>
+          <div
+            className={`panel-section ${activeView === "value" ? "active" : ""}`}
+            onClick={() => setActiveView("value")}
+          >
+            <h3>Tổng giá trị nhập/ xuất</h3>
           </div>
         </aside>
 
@@ -340,6 +364,88 @@ export default function InventoryStatsPage() {
                     <Legend />
                   </PieChart>
                 </ResponsiveContainer>
+              </div>
+            )}
+
+            {activeView === "value" && (
+              <div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <h3 style={{margin: 0}}>Tổng giá trị nhập/ xuất theo thời gian</h3>
+                  <div style={{ display: "flex", gap: 12}}>
+                    <div>
+                      <label style={{ marginRight: 4 }}>Bắt đầu:</label>
+                      <input
+                        type="date"
+                        value={startDate || ""}
+                        onChange={(e) => setStartDate(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ marginRight: 4 }}>Kết thúc:</label>
+                      <input
+                        type="date"
+                        value={endDate || ""}
+                        onChange={(e) => setEndDate(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                
+                <div style={{ 
+                  display: "flex", 
+                  gap: "16px", 
+                  marginBottom: "20px", 
+                  marginTop: "16px",
+                }}>
+                  <div style={{
+                    flex: 1,
+                    padding: "16px",
+                    borderRadius: "10px",
+                    background: "#e8f5e9",
+                    textAlign: "center",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
+                  }}>
+                    <h4 style={{ margin: 0, color: "#2e7d32" }}>Giá trị nhập</h4>
+                    <p style={{ margin: "8px 0 0", fontSize: "18px", fontWeight: "bold" }}>
+                      {totalImportValue.toLocaleString("vi-VN")} VND
+                    </p>
+                  </div>
+
+                  <div style={{
+                    flex: 1,
+                    padding: "16px",
+                    borderRadius: "10px",
+                    background: "#fff3e0",
+                    textAlign: "center",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
+                  }}>
+                    <h4 style={{ margin: 0, color: "#ef6c00" }}>Giá trị xuất</h4>
+                    <p style={{ margin: "8px 0 0", fontSize: "18px", fontWeight: "bold" }}>
+                      {totalExportValue.toLocaleString("vi-VN")} VND
+                    </p>
+                  </div>
+
+                  <div style={{
+                    flex: 1,
+                    padding: "16px",
+                    borderRadius: "10px",
+                    background: "#e3f2fd",
+                    textAlign: "center",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
+                  }}>
+                    <h4 style={{ margin: 0, color: "#1565c0" }}>Doanh thu</h4>
+                    <p style={{ margin: "8px 0 0", fontSize: "18px", fontWeight: "bold" }}>
+                      {totalExportValue.toLocaleString("vi-VN")} VND
+                    </p>
+                  </div>
+                </div>
               </div>
             )}
           </div>
