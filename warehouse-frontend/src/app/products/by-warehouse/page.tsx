@@ -92,63 +92,87 @@ export default function ProductsByWarehouse() {
         </aside>
 
         {/* MAIN CONTENT */}
-        <main style={{ flex: 1, padding: 20, overflowY: "auto" }}>
-        <div
+        <main style={{ flex: 1, padding: 0, overflowY: "auto", background: "#f4f6f8" }}>
+          <div
             style={{
-                background: "#fff",
-                padding: 20,
-                borderRadius: 8,
-                boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+              background: "#fff",
+              padding: 24,
+              borderRadius: 12,
+              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
             }}
-            >
+          >
             <div
-                style={{
+              style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                marginBottom: 16,
-                }}
+                marginBottom: 24,
+              }}
             >
-                <h2 style={{ margin: 0 }}>Sản phẩm theo kho hàng</h2>
+              <h2 style={{ margin: 0, fontSize: "1.6rem", color: "#333" }}>
+                🏭 Danh sách sản phẩm theo kho hàng
+              </h2>
 
-                <button
+              <button
                 type="button"
                 onClick={() => router.push("/")}
                 style={{
-                    padding: "6px 14px",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                    backgroundColor: "#007bff",
-                    color: "#fff",
-                    border: "none",
-                    fontWeight: "bold",
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  backgroundColor: "#007bff",
+                  color: "#fff",
+                  border: "none",
+                  fontWeight: "bold",
+                  transition: "0.2s",
                 }}
-                >
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#007bff")}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#007bff")}
+              >
                 ⬅ Quay về
-                </button>
+              </button>
             </div>
 
             {Object.keys(grouped).length === 0 ? (
-              <p>Không có sản phẩm nào</p>
+              <p style={{ fontSize: "1.1rem", color: "#777" }}>Không có sản phẩm nào</p>
             ) : (
               Object.keys(grouped).map((wh) => (
                 <div
                   key={wh}
                   style={{
-                    marginBottom: 32,
-                    border: "1px solid #ddd",
-                    borderRadius: 8,
-                    padding: 16,
-                    background: "#f9f9f9",
+                    marginBottom: 40,
+                    background: "#ffffff",
+                    borderRadius: 12,
+                    border: "1px solid #e0e0e0",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                    transition: "0.2s ease-in-out",
                   }}
                 >
-                  <h3 style={{ marginBottom: 16 }}>🏬 {wh}</h3>
+                  <div
+                    style={{
+                      background: "#007bff",
+                      color: "#fff",
+                      padding: "12px 16px",
+                      borderTopLeftRadius: 12,
+                      borderTopRightRadius: 12,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                    }}
+                  >
+                    <span style={{ fontSize: "1.4rem" }}>🏬</span>
+                    <h3 style={{ margin: 0, fontSize: "1.2rem" }}>{wh}</h3>
+                  </div>
 
                   <div
                     style={{
+                      padding: 20,
                       display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-                      gap: 16,
+                      gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+                      gap: 20,
+                      background: "#fafafa",
+                      borderBottomLeftRadius: 12,
+                      borderBottomRightRadius: 12,
                     }}
                   >
                     {grouped[wh].map((p) => (
@@ -156,17 +180,36 @@ export default function ProductsByWarehouse() {
                         key={p.id}
                         style={{
                           background: "#fff",
-                          padding: 12,
-                          border: "1px solid #ddd",
-                          borderRadius: 6,
-                          boxShadow: "0 1px 4px rgba(0,0,0,0.05)",
+                          borderRadius: 10,
+                          border: "1px solid #e5e5e5",
+                          boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+                          padding: 16,
+                          transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = "translateY(-4px)";
+                          e.currentTarget.style.boxShadow = "0 4px 10px rgba(0,0,0,0.1)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = "translateY(0)";
+                          e.currentTarget.style.boxShadow = "0 2px 6px rgba(0,0,0,0.05)";
                         }}
                       >
-                        <h4 style={{ margin: "0 0 8px 0" }}>{p.name}</h4>
-                        <p style={{ margin: "4px 0" }}>🆔 ID: {p.id}</p>
-                        <p style={{ margin: "4px 0" }}>📦 SL: {p.quantity}</p>
-                        <p style={{ margin: "4px 0" }}>
-                          💲{" "}
+                        <h4
+                          style={{
+                            margin: "0 0 8px 0",
+                            fontSize: "1.1rem",
+                            color: "#333",
+                            fontWeight: 600,
+                          }}
+                        >
+                          {p.name}
+                        </h4>
+
+                        <p style={{ margin: "4px 0", color: "#555" }}>🆔 <b>ID:</b> {p.id}</p>
+                        <p style={{ margin: "4px 0", color: "#555" }}>📦 <b>Số lượng:</b> {p.quantity}</p>
+                        <p style={{ margin: "4px 0", color: "#555" }}>
+                          💲 <b>Giá:</b>{" "}
                           {Number(p.price).toLocaleString("vi-VN", {
                             maximumFractionDigits: 0,
                           })}{" "}
