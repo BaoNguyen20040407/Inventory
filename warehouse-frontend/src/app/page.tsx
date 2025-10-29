@@ -9,7 +9,7 @@ import { useSuppliers } from "./hooks/useSuppliers";
 import { useCategories } from "./hooks/useCategories";
 import { useStockMovements } from "./hooks/useInventory";
 import { useWarehouse } from "./hooks/useWarehouse";
-import WarehouseTabole from "./components/warehouse_table";
+import WarehouseTable from "./components/warehouse_table";
 import { useUnits } from "./hooks/useUnits";
 import UnitsTable from "./components/units_table";
 
@@ -39,6 +39,15 @@ export default function HomePage() {
       <div className="app-grid">
         {/* LEFT */}
         <aside className="left-panel">
+          <div className={`panel-section ${activeView === "products" ? "active" : ""}`} onClick={() => setActiveView("products")}>
+            <h3>Sản phẩm</h3>
+          </div>
+          <div className={`panel-section ${activeView === "inventory" ? "active" : ""}`} onClick={() => setActiveView("inventory")}>
+            <h3>Nhập / Xuất kho</h3>
+          </div>
+          <div className={`panel-section ${activeView === "warehouse" ? "active" : ""}`} onClick={() => setActiveView("warehouse")}>
+            <h3>Kho hàng</h3>
+          </div>
           <div className={`panel-section ${activeView === "suppliers" ? "active" : ""}`} onClick={() => setActiveView("suppliers")}>
             <h3>Nhà cung cấp</h3>
           </div>
@@ -47,15 +56,6 @@ export default function HomePage() {
           </div>
           <div className={`panel-section ${activeView === "units" ? "active" : ""}`} onClick={() => setActiveView("units")}>
             <h3>Đơn vị tính</h3>
-          </div>
-          <div className={`panel-section ${activeView === "warehouse" ? "active" : ""}`} onClick={() => setActiveView("warehouse")}>
-            <h3>Kho hàng</h3>
-          </div>
-          <div className={`panel-section ${activeView === "products" ? "active" : ""}`} onClick={() => setActiveView("products")}>
-            <h3>Sản phẩm</h3>
-          </div>
-          <div className={`panel-section ${activeView === "inventory" ? "active" : ""}`} onClick={() => setActiveView("inventory")}>
-            <h3>Nhập / Xuất kho</h3>
           </div>
         </aside>
 
@@ -93,7 +93,7 @@ export default function HomePage() {
             )}
 
             {activeView === "warehouse" && (
-              <WarehouseTabole
+              <WarehouseTable
                 warehouse={warehouseHook.warehouse}
                 loading={warehouseHook.loading}
                 onDelete={warehouseHook.deleteWarehouse}
