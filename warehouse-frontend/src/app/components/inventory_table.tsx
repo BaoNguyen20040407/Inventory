@@ -207,7 +207,7 @@ export default function StockMovementsTable({ movements, loading, products }: Pr
                 <td>{m.quantity}</td>
                 <td>{m.type === "Import" ? "Nhập" : "Xuất"}</td>
                 <td>{m.reason || "-"}</td>
-                <td>{new Date(m.created).toLocaleString()}</td>
+                <td>{new Date(m.created).toLocaleString("vi-VN")}</td>
                 <td>
                 <button
                   onClick={async () => {
@@ -215,7 +215,7 @@ export default function StockMovementsTable({ movements, loading, products }: Pr
                     const temp = document.createElement("div");
                     temp.style.padding = "24px";
                     temp.style.background = "white";
-                    temp.style.width = "600px"; // để PDF có layout đẹp
+                    temp.style.width = "600px";
                     
                     temp.innerHTML = `
                       <div style="text-align:center; margin-bottom:20px;">
