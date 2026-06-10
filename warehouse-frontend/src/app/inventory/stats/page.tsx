@@ -7,12 +7,14 @@ import {
 import { StockMovement } from "../../hooks/useInventory";
 import { useRouter } from "next/navigation";
 import { setDefaultAutoSelectFamily } from "net";
+import { Product } from "../../hooks/useProducts";
 
 const COLORS = ["#82ca9d", "#8884d8", "#ff8042", "#ffbb28"];
 
 export default function InventoryStatsPage() {
   const router = useRouter();
   const [movements, setMovements] = useState<StockMovement[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeView, setActiveView] = useState<"bar" | "pie" | "stock" | "summary" | "value" | null>(null);
 
@@ -42,6 +44,20 @@ export default function InventoryStatsPage() {
     };
 
     loadMovements();
+
+    const loadProducts = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/products");
+        if (res.ok) {
+          const data = await res.json();
+          setProducts(data);
+        }
+      } catch (err) {
+        console.error("❌ Fetch products error:", err);
+      }
+    };
+    
+    loadProducts();
   }, []);
 
   if (loading) {
@@ -86,16 +102,9 @@ export default function InventoryStatsPage() {
   }));
 
   // 👉 Tính tồn kho hiện tại theo sản phẩm
-  const stockByProduct: Record<string, number> = {};
-  movements.forEach((m) => {
-    const name = m.product?.name || "Khác";
-    if (!stockByProduct[name]) stockByProduct[name] = 0;
-    stockByProduct[name] += m.type === "Import" ? m.quantity : -m.quantity;
-  });
-
-  const stockData = Object.keys(stockByProduct).map((k) => ({
-    name: k,
-    tồn: stockByProduct[k],
+  const stockData = products.map((p) => ({
+    name: p.name,
+    tồn: p.quantity,
   }));
 
   let summaryImport = 0;
