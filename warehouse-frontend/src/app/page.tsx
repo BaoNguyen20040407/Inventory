@@ -12,11 +12,12 @@ import { useWarehouse } from "./hooks/useWarehouse";
 import WarehouseTable from "./components/warehouse_table";
 import { useUnits } from "./hooks/useUnits";
 import UnitsTable from "./components/units_table";
+import Dashboard from "./components/dashboard";
 
-type PanelView = "products" | "suppliers" | "categories" | "inventory" | "warehouse" | "units";
+type PanelView = "dashboard" | "products" | "suppliers" | "categories" | "inventory" | "warehouse" | "units";
 
 export default function HomePage() {
-  const [activeView, setActiveView] = useState<PanelView>("products");
+  const [activeView, setActiveView] = useState<PanelView>("dashboard");
 
   const productsHook = useProducts();
   const suppliersHook = useSuppliers();
@@ -24,6 +25,22 @@ export default function HomePage() {
   const stockMovementsHook = useStockMovements();
   const warehouseHook = useWarehouse();
   const unitHook = useUnits();
+
+  const totalImport = stockMovementsHook.movements.filter(
+    (m) => m.type === "Import"
+  ).length
+
+  const totalExport = stockMovementsHook.movements.filter(
+    (m) => m.type === "Export"
+  ).length
+
+  const lowStockProducts = productsHook.products.filter(
+    (p) => p.quantity <= 5
+  ).length
+
+  const totalStock = productsHook.products.reduce(
+    (sum, product) => sum + Number(product.quantity || 0), 0
+  );
 
   return (
     <div className="app-container">
@@ -39,6 +56,9 @@ export default function HomePage() {
       <div className="app-grid">
         {/* LEFT */}
         <aside className="left-panel">
+          <div className={`panel-section ${activeView === "dashboard" ? "active" : ""}`} onClick={() => setActiveView("dashboard")}>
+            <h3>Dashboard</h3>
+          </div>
           <div className={`panel-section ${activeView === "products" ? "active" : ""}`} onClick={() => setActiveView("products")}>
             <h3>Sản phẩm</h3>
           </div>
@@ -62,6 +82,18 @@ export default function HomePage() {
         {/* RIGHT */}
         <main className="right-panel">
           <div className="table-card">
+            {activeView === "dashboard" &&(
+              <Dashboard
+                totalProducts={productsHook.products.length}
+                totalSuppliers={suppliersHook.suppliers.length}
+                totalCategories={categoriesHook.categories.length}
+                totalMovements={stockMovementsHook.movements.length}
+                totalImport = {totalImport}
+                totalExport = {totalExport}
+                lowStockProducts = {lowStockProducts}
+                totalStock = {totalStock}
+              />
+            )}
             {activeView === "products" && (
               <ProductsTable
                 products={productsHook.products}
