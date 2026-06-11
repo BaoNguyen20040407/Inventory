@@ -7,7 +7,7 @@ export interface User {
   id: number;
   username: string;
   role: string;
-  is_active: number;
+  isActive: boolean;
   created_at: string;
 }
 
@@ -124,11 +124,11 @@ export default function UsersTable({ users, loading, onDelete }: Props) {
                     style={{
                       padding: "4px 8px",
                       borderRadius: "6px",
-                      background: u.is_active ? "#c8e6c9" : "#ffcdd2",
+                      background: u.isActive ? "#c8e6c9" : "#ffcdd2",
                       fontWeight: "bold",
                     }}
                   >
-                    {u.is_active ? "ACTIVE" : "LOCKED"}
+                    {u.isActive ? "ACTIVE" : "LOCKED"}
                   </span>
                 </td>
 

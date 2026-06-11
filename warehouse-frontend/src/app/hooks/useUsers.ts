@@ -4,7 +4,7 @@ export interface User {
   id: number;
   username: string;
   role: string;
-  is_active: number;
+  is_active: boolean;
   created_at: string;
 }
 
@@ -28,6 +28,21 @@ export function useUsers() {
       setLoading(false);
     }
   };
+
+  //Thêm đơn vị tính
+      const addUsers = async (unit: Omit<User, "id">) => {
+          try {
+          const res = await fetch("http://localhost:3000/unit", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(unit),
+          });
+          if (!res.ok) throw new Error("Thêm người dùng thất bại");
+          await fetchUsers();
+          } catch (err) {
+          console.error(err);
+          }
+      };
 
   const deleteUser = async (id: number) => {
     try {
