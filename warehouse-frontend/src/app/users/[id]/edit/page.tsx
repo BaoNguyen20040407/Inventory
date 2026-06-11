@@ -72,7 +72,7 @@ export default function EditUserPage() {
 
       alert("Cập nhật thành công");
 
-      router.push("/");
+      router.push("/users");
       router.refresh();
     } catch (err) {
       console.error(err);
@@ -181,7 +181,7 @@ export default function EditUserPage() {
                 type="button"
                 className="btn btn-gray"
                 onClick={() =>
-                  router.push("/")
+                  router.push("/users")
                 }
               >
                 Hủy

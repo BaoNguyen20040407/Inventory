@@ -46,7 +46,7 @@ export default function EditUnitPage() {
             throw new Error(`Cập nhật đơn vị tính thất bại: ${res.status} - ${errorText}`);
           }
     
-          router.push("/");
+          router.push("/unit");
           router.refresh(); 
         } catch (err) {
           console.error(err);
@@ -99,7 +99,7 @@ export default function EditUnitPage() {
                             <button
                                 type="button"
                                 className="btn btn-gray"
-                                onClick={() => router.push("/")}
+                                onClick={() => router.push("/unit")}
                             >
                                 Hủy    
                             </button>

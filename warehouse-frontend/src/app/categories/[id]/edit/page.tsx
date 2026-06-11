@@ -46,7 +46,7 @@ export default function EditCategoryPage() {
         throw new Error(`Cập nhật thất bại: ${res.status} - ${errorText}`);
       }
 
-      router.push("/");
+      router.push("/categories");
       router.refresh();
     } catch (err) {
       console.error(err);
@@ -97,7 +97,7 @@ export default function EditCategoryPage() {
               <button
                 type="button"
                 className="btn btn-gray"
-                onClick={() => router.push("/")}
+                onClick={() => router.push("/categories")}
               >
                 Hủy
               </button>

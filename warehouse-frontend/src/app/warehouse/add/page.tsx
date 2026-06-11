@@ -22,7 +22,7 @@ export default function AddWarehousePage() {
             throw new Error(`Lưu nhà cung cấp thất bại: ${res.status} - ${errorText}`);
           }
     
-          router.push("/");
+          router.push("/warehouse");
           router.refresh(); // ✅ reload data
         } catch (err) {
           console.error(err);
@@ -76,7 +76,7 @@ export default function AddWarehousePage() {
                             <button
                                 type="button"
                                 className="btn btn-gray"
-                                onClick={() => router.push("/")}>
+                                onClick={() => router.push("/warehouse")}>
                                 Hủy
                             </button>
                         </div>

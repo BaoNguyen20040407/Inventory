@@ -45,7 +45,7 @@ export default function ExportStockPage() {
         throw new Error(`Thêm phiếu xuất thất bại: ${res.status} - ${errorText}`);
       }
 
-      router.push("/");
+      router.push("/inventory");
       router.refresh();
     } catch (err) {
       console.error(err);
@@ -109,7 +109,7 @@ export default function ExportStockPage() {
               <button
                 type="button"
                 className="btn btn-gray"
-                onClick={() => router.push("/")}
+                onClick={() => router.push("/inventory")}
               >
                 Hủy
               </button>

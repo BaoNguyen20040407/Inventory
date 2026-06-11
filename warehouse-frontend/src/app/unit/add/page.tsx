@@ -21,7 +21,7 @@ export default function AddUnitPage() {
             throw new Error(`Lưu đơn vị tính thất bại: ${res.status} - ${errorText}`);
           }
     
-          router.push("/");
+          router.push("/unit");
           router.refresh(); // ✅ reload data
         } catch (err) {
           console.error(err);
@@ -72,7 +72,7 @@ export default function AddUnitPage() {
                             <button
                                 type="button"
                                 className="btn btn-gray"
-                                onClick={() => router.push("/")}
+                                onClick={() => router.push("/unit")}
                             >
                                 Hủy    
                             </button>

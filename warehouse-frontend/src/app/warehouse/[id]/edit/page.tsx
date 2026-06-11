@@ -48,7 +48,7 @@ export default function EditWarehousePage() {
         throw new Error(`Cập nhật thất bại: ${res.status} - ${errorText}`);
       }
 
-      router.push("/");
+      router.push("/warehouse");
       router.refresh();
     } catch (err) {
       console.error(err);
@@ -104,7 +104,7 @@ export default function EditWarehousePage() {
                         <button
                             type="button"
                             className="btn btn-gray"
-                            onClick={() => router.push("/")}>
+                            onClick={() => router.push("/warehouse")}>
                             Hủy
                         </button>
                     </div>

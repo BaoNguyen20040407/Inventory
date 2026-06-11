@@ -21,7 +21,7 @@ export default function AddCategoryPage() {
         throw new Error(`Lưu loại sản phẩm thất bại: ${res.status} - ${errorText}`);
       }
 
-      router.push("/");
+      router.push("/categories");
       router.refresh(); // ✅ reload data
     } catch (err) {
       console.error(err);
@@ -66,7 +66,7 @@ export default function AddCategoryPage() {
               <button
                 type="button"
                 className="btn btn-gray"
-                onClick={() => router.push("/")}
+                onClick={() => router.push("/categories")}
               >
                 Hủy
               </button>

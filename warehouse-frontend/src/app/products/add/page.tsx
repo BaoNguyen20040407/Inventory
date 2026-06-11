@@ -87,7 +87,7 @@ export default function AddProductPage() {
         throw new Error(`Lưu sản phẩm thất bại: ${res.status} - ${errorText}`);
       }
   
-      router.push("/");
+      router.push("/products");
       router.refresh();
     } catch (err) {
       console.error(err);
@@ -212,7 +212,7 @@ export default function AddProductPage() {
               <button
                 type="button"
                 className="btn btn-gray"
-                onClick={() => router.push("/")}
+                onClick={() => router.push("/products")}
               >
                 Hủy
               </button>

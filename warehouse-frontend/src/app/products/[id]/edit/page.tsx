@@ -90,7 +90,7 @@ export default function EditProductPage() {
         throw new Error(`Cập nhật thất bại: ${res.status} - ${errorText}`);
       }
 
-      router.push("/");
+      router.push("/products");
       router.refresh();
     } catch (err) {
       console.error(err);
@@ -212,7 +212,7 @@ export default function EditProductPage() {
               <button
                 type="button"
                 className="btn btn-gray"
-                onClick={() => router.push("/")}
+                onClick={() => router.push("/products")}
               >
                 Hủy
               </button>
