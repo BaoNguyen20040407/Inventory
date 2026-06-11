@@ -12,6 +12,9 @@ import { Warehouse } from './warehouse/warehouse.entity';
 import { WarehouseModule } from './warehouse/warehouse.module';
 import { Unit } from './unit/unit.entity';
 import { UnitModule } from './unit/unit.module';
+import { User } from './users/user.entity';
+import { UsersModule } from './users/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,7 +25,7 @@ import { UnitModule } from './unit/unit.module';
       username: 'root',
       password: '',
       database: 'warehouse',
-      entities: [Product, Category, Supplier, Inventory, Warehouse, Unit],
+      entities: [Product, Category, Supplier, Inventory, Warehouse, Unit, User],
       synchronize: false,
     }),
     ProductsModule,
@@ -31,6 +34,8 @@ import { UnitModule } from './unit/unit.module';
     InventoryModule,
     WarehouseModule,
     UnitModule,
+    UsersModule,
+    AuthModule
   ],
 })
 export class AppModule {}
