@@ -199,7 +199,7 @@ export default function InventoryStatsPage() {
               </h2>
               <button
                 type="button"
-                onClick={() => router.push("/")}
+                onClick={() => router.push("/inventory")}
                 style={{
                   marginLeft: "auto",
                   padding: "6px 14px",
