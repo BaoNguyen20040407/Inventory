@@ -17,8 +17,10 @@ export default function AppHeader() {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        position: "relative",
       }}
     >
+      {/* LOGO */}
       <div className="logo">
         <img
           src="https://static.vecteezy.com/system/resources/previews/004/891/075/non_2x/the-initials-w-logo-is-simple-and-modern8868-free-vector.jpg"
@@ -31,6 +33,7 @@ export default function AppHeader() {
         />
       </div>
 
+      {/* TITLE */}
       <h1
         style={{
           fontSize: "1.6rem",
@@ -41,25 +44,39 @@ export default function AppHeader() {
         📦 Warehouse Management
       </h1>
 
-      <div>
+      {/* ACCOUNT */}
+      <div style={{ position: "relative" }}>
         <button
           onClick={() => setShowAccount(!showAccount)}
           style={{
             background: "#fff",
             padding: "6px 12px",
             borderRadius: "8px",
+            cursor: "pointer",
           }}
         >
           👤 {username}
         </button>
 
         {showAccount && (
-          <div className="account-dropdown">
-            <button>👤 Thông tin tài khoản</button>
-            <button>🔑 Đổi mật khẩu</button>
+          <div
+            style={{
+              position: "absolute",
+              right: 0,
+              top: "110%",
+              background: "#fff",
+              borderRadius: "10px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+              width: "180px",
+              zIndex: 999,
+              overflow: "hidden",
+            }}
+          >
+            <button style={btnStyle}>👤 Thông tin tài khoản</button>
+            <button style={btnStyle}>🔑 Đổi mật khẩu</button>
 
             <button
-              style={{ color: "red" }}
+              style={{ ...btnStyle, color: "red" }}
               onClick={() => {
                 localStorage.clear();
                 window.location.href = "/login";
@@ -73,3 +90,12 @@ export default function AppHeader() {
     </header>
   );
 }
+
+const btnStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "10px",
+  textAlign: "left",
+  background: "white",
+  border: "none",
+  cursor: "pointer",
+};
