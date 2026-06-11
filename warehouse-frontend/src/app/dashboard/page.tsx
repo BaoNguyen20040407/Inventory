@@ -13,8 +13,10 @@ import WarehouseTable from "../components/warehouse_table";
 import { useUnits } from "../hooks/useUnits";
 import UnitsTable from "../components/units_table";
 import Dashboard from "../components/dashboard";
+import UsersTable from "../components/users_table";
+import { useUsers } from "../hooks/useUsers";
 
-type PanelView = "dashboard" | "products" | "suppliers" | "categories" | "inventory" | "warehouse" | "units";
+type PanelView = "dashboard" | "products" | "suppliers" | "categories" | "inventory" | "warehouse" | "units" | "users";
 
 export default function HomePage() {
   const [activeView, setActiveView] = useState<PanelView>("dashboard");
@@ -25,6 +27,7 @@ export default function HomePage() {
   const stockMovementsHook = useStockMovements();
   const warehouseHook = useWarehouse();
   const unitHook = useUnits();
+  const userHook = useUsers();
 
   const [showAccount, setShowAccount] = useState(false);
 
@@ -48,6 +51,10 @@ export default function HomePage() {
   const totalStock = productsHook.products.reduce(
     (sum, product) => sum + Number(product.quantity || 0), 0
   );
+
+  const role = typeof window !== "undefined"
+    ? localStorage.getItem("role")
+    : "";
 
   return (
     <div className="app-container">
@@ -178,6 +185,16 @@ export default function HomePage() {
           <div className={`panel-section ${activeView === "units" ? "active" : ""}`} onClick={() => setActiveView("units")}>
             <h3>Đơn vị tính</h3>
           </div>
+          {role === "ADMIN" && (
+            <div
+              className={`panel-section ${
+                activeView === "users" ? "active" : ""
+              }`}
+              onClick={() => setActiveView("users")}
+            >
+              <h3>Quản lý người dùng</h3>
+            </div>
+          )}
         </aside>
 
         {/* RIGHT */}
@@ -241,6 +258,13 @@ export default function HomePage() {
               />
             )}
 
+            {activeView === "users" && role === "ADMIN" && (
+              <UsersTable
+                users={userHook.users}
+                loading={userHook.loading}
+                onDelete={userHook.deleteUser}
+              />
+            )}
           </div>
         </main>
       </div>

@@ -27,8 +27,13 @@ export default function LoginPage() {
   
       if (res.ok) {
         // lưu token (nếu backend trả về)
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.access_token);
         localStorage.setItem("username", data.username);
+        localStorage.setItem("role", data.role);
+
+        localStorage.getItem("role")
+
+        console.log(data);
   
         router.push("/dashboard");
       } else {
