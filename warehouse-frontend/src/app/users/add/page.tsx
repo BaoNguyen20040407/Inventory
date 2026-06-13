@@ -8,6 +8,9 @@ export default function AddUserPage() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [role, setRole] = useState("EMPLOYEE");
 
   const handleSubmit = async (
@@ -25,6 +28,9 @@ export default function AddUserPage() {
               "application/json",
           },
           body: JSON.stringify({
+            fullName,
+            email,
+            phone, 
             username,
             password,
             role,
@@ -84,6 +90,39 @@ export default function AddUserPage() {
             className="form"
             onSubmit={handleSubmit}
           >
+            <input
+              type="text"
+              placeholder="Họ tên"
+              value={fullName}
+              onChange={(e) =>
+                setFullName(e.target.value)
+              }
+              required
+              className="form-input"
+            />
+
+            <input
+              type="text"
+              placeholder="Số điện thoại"
+              value={phone}
+              onChange={(e) =>
+                setPhone(e.target.value)
+              }
+              required
+              className="form-input"
+            />
+
+            <input
+              type="text"
+              placeholder="Email"
+              value={email}
+              onChange={(e) =>
+                setEmail(e.target.value)
+              }
+              required
+              className="form-input"
+            />
+
             <input
               type="text"
               placeholder="Tên đăng nhập"

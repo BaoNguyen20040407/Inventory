@@ -22,6 +22,8 @@ export class UsersService {
     return this.userRepository.find({
       select: [
         'id',
+        'fullName',
+        'phone',
         'username',
         'role',
         'isActive',
@@ -35,6 +37,8 @@ export class UsersService {
       where: { id },
       select: [
         'id',
+        'fullName',
+        'phone',
         'username',
         'role',
         'isActive',
@@ -50,6 +54,9 @@ export class UsersService {
     );
 
     const user = this.userRepository.create({
+      fullName: data.fullName,
+      phone: data.phone,
+      email: data.email,
       username: data.username,
       passwordHash,
       role: data.role,

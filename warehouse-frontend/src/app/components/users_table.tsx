@@ -5,6 +5,8 @@ import { useState } from "react";
 
 export interface User {
   id: number;
+  fullName: string; 
+  phone: string;
   username: string;
   role: string;
   isActive: boolean;
@@ -83,6 +85,8 @@ export default function UsersTable({ users, loading, onDelete }: Props) {
         <thead>
           <tr>
             <th>ID</th>
+            <th>Họ tên</th>
+            <th>Số điện thoại</th>
             <th>Username</th>
             <th>Role</th>
             <th>Trạng thái</th>
@@ -101,6 +105,8 @@ export default function UsersTable({ users, loading, onDelete }: Props) {
             filteredUsers.map((u) => (
               <tr key={u.id}>
                 <td>{u.id}</td>
+                <td>{u.fullName}</td>
+                <td>{u.phone}</td>
                 <td>{u.username}</td>
 
                 {/* ROLE */}

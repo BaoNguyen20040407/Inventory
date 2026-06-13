@@ -5,9 +5,9 @@ import { useState } from "react";
 export default function AppHeader() {
   const [showAccount, setShowAccount] = useState(false);
 
-  const username =
+  const fullName =
     typeof window !== "undefined"
-      ? localStorage.getItem("username")
+      ? localStorage.getItem("fullName")
       : "";
 
   return (
@@ -55,7 +55,7 @@ export default function AppHeader() {
             cursor: "pointer",
           }}
         >
-          👤 {username}
+          👤 {fullName}
         </button>
 
         {showAccount && (
