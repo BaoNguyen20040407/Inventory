@@ -4,9 +4,9 @@ import {
 } from '@nestjs/common';
 
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 import { UsersService } from 'src/users/user.service';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +24,7 @@ export class AuthService {
         username,
       );
 
-      console.log("USER LOGIN:", user);
+    console.log('USER LOGIN:', user);
 
     if (!user) {
       throw new UnauthorizedException(
@@ -32,7 +32,6 @@ export class AuthService {
       );
     }
 
-    // 🔒 Tài khoản bị khóa
     if (!user.isActive) {
       throw new UnauthorizedException(
         'Tài khoản đã bị khóa. Liên hệ quản trị viên.',
@@ -65,6 +64,51 @@ export class AuthService {
       access_token,
       username: user.username,
       role: user.role,
+    };
+  }
+
+  async changePassword(
+    userId: number,
+    oldPassword: string,
+    newPassword: string,
+  ) {
+    const user =
+      await this.usersService.findById(
+        userId,
+      );
+
+    if (!user) {
+      throw new UnauthorizedException(
+        'Người dùng không tồn tại',
+      );
+    }
+
+    const isMatch =
+      await bcrypt.compare(
+        oldPassword,
+        user.passwordHash,
+      );
+
+    if (!isMatch) {
+      throw new UnauthorizedException(
+        'Mật khẩu cũ không đúng',
+      );
+    }
+
+    const hashedPassword =
+      await bcrypt.hash(
+        newPassword,
+        10,
+      );
+
+    await this.usersService.updatePassword(
+      userId,
+      hashedPassword,
+    );
+
+    return {
+      success: true,
+      message: 'Đổi mật khẩu thành công',
     };
   }
 }

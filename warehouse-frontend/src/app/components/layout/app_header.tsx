@@ -73,7 +73,12 @@ export default function AppHeader() {
             }}
           >
             <button style={btnStyle}>👤 Thông tin tài khoản</button>
-            <button style={btnStyle}>🔑 Đổi mật khẩu</button>
+            <button 
+              style={btnStyle}
+              onClick={() => {
+                window.location.href = "/change-password";
+              }}
+              >🔑 Đổi mật khẩu</button>
 
             <button
               style={{ ...btnStyle, color: "red" }}

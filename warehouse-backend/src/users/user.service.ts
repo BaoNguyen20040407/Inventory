@@ -74,4 +74,25 @@ export class UsersService {
   async deleteUser(id: number) {
     return this.userRepository.delete(id);
   }
+
+  // Tìm user theo id (có lấy passwordHash)
+  async findById(id: number) {
+    return this.userRepository.findOne({
+      where: { id },
+    });
+  }
+
+  // Cập nhật mật khẩu
+  async updatePassword(
+    id: number,
+    passwordHash: string,
+  ) {
+    await this.userRepository.update(id, {
+      passwordHash,
+    });
+
+    return this.userRepository.findOne({
+      where: { id },
+    });
+  }
 }
