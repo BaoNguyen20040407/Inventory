@@ -297,3 +297,42 @@ tbody tr:hover { background:#fbfdff; }
   border-radius: 6px;
   cursor: pointer;
 }
+
+.profile-form {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 120px 300px 120px 300px;
+  gap: 16px 150px;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-grid label {
+  font-weight: 600;
+  color: #374151;
+}
+
+.profile-grid input,
+.profile-grid select {
+  width: 100%;
+}
+
+/* Tablet */
+@media (max-width: 1200px) {
+  .profile-grid {
+    grid-template-columns: 120px 1fr 120px 1fr;
+    gap: 16px 32px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .profile-grid {
+    grid-template-columns: 120px 1fr;
+    gap: 12px 16px;
+  }
+}

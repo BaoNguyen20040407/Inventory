@@ -31,8 +31,13 @@ export default function LoginPage() {
         localStorage.setItem("username", data.username);
         localStorage.setItem("role", data.role);
         localStorage.setItem("fullName", data.fullName);
+        localStorage.setItem("email", data.email);
+        localStorage.setItem("phone",data.phone);
+        localStorage.setItem("isActive", data.isActive);
 
         localStorage.getItem("role")
+
+        console.log(data);
 
         console.log(data);
   
