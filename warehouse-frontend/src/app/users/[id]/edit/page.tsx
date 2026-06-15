@@ -12,6 +12,9 @@ export default function EditUserPage() {
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("EMPLOYEE");
   const [isActive, setIsActive] = useState(true);
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
 
   const [loading, setLoading] = useState(true);
 
@@ -32,6 +35,9 @@ export default function EditUserPage() {
         setUsername(data.username);
         setRole(data.role);
         setIsActive(data.isActive);
+        setFullName(data.fullName);
+        setPhone(data.phone);
+        setEmail(data.email);
       } catch (err) {
         console.error(err);
         alert("Lỗi tải dữ liệu user");
@@ -62,6 +68,9 @@ export default function EditUserPage() {
             username,
             role,
             isActive,
+            fullName,
+            phone, 
+            email,
           }),
         }
       );
@@ -98,6 +107,39 @@ export default function EditUserPage() {
             className="form"
             onSubmit={handleSubmit}
           >
+            <input
+              type="text"
+              placeholder="Họ tên"
+              value={fullName}
+              onChange={(e) =>
+                setFullName(e.target.value)
+              }
+              required
+              className="form-input"
+            />
+
+            <input
+              type="text"
+              placeholder="Số điện thoại"
+              value={phone}
+              onChange={(e) =>
+                setPhone(e.target.value)
+              }
+              required
+              className="form-input"
+            />
+
+            <input
+              type="text"
+              placeholder="Email"
+              value={email}
+              onChange={(e) =>
+                setEmail(e.target.value)
+              }
+              required
+              className="form-input"
+            />
+
             <input
               type="text"
               placeholder="Username"

@@ -38,6 +38,7 @@ export class UsersService {
       select: [
         'id',
         'fullName',
+        'email',
         'phone',
         'username',
         'role',
