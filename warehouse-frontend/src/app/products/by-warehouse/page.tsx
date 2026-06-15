@@ -3,6 +3,8 @@ import { useProducts } from "../../hooks/useProducts";
 import { Product } from "../../hooks/useProducts";
 import { useState } from "react";
 import { useRouter } from "next/navigation"; 
+import AppHeader from "@/app/components/layout/app_header";
+import Sidebar from "@/app/components/layout/sidebar";
 
 export default function ProductsByWarehouse() {
   const { products, loading } = useProducts();
@@ -25,71 +27,12 @@ export default function ProductsByWarehouse() {
       style={{ display: "flex", flexDirection: "column", height: "100vh" }}
     >
       {/* HEADER */}
-      <header className="app-header">
-        <div className="logo">
-          <img
-            src="https://static.vecteezy.com/system/resources/previews/004/891/075/non_2x/the-initials-w-logo-is-simple-and-modern8868-free-vector.jpg"
-            alt="Logo"
-            style={{ width: "40px", height: "40px", objectFit: "contain" }}
-          />
-        </div>
-        <h1 style={{ fontSize: "1.6rem", margin: 0, color: "#ffffff" }}>
-          📦 Warehouse Management
-        </h1>
-      </header>
+      <AppHeader title = "📦 WAREHOUSE MANAGEMENT"/>
+      
 
       <div className="app-grid">
         {/* LEFT PANEL */}
-        <aside className="left-panel">
-          <div
-            className={`panel-section ${
-              activeView === "suppliers" ? "active" : ""
-            }`}
-            onClick={() => setActiveView("suppliers")}
-          >
-            <h3>Nhà cung cấp</h3>
-          </div>
-          <div
-            className={`panel-section ${
-              activeView === "categories" ? "active" : ""
-            }`}
-            onClick={() => setActiveView("categories")}
-          >
-            <h3>Loại sản phẩm</h3>
-          </div>
-          <div
-            className={`panel-section ${
-              activeView === "unit" ? "active" : ""
-            }`}
-            onClick={() => setActiveView("unit")}
-          >
-            <h3>Đơn vị tính</h3>
-          </div>
-          <div
-            className={`panel-section ${
-              activeView === "warehouse" ? "active" : ""
-            }`}
-            onClick={() => setActiveView("warehouse")}
-          >
-            <h3>Kho hàng</h3>
-          </div>
-          <div
-            className={`panel-section ${
-              activeView === "products" ? "active" : ""
-            }`}
-            onClick={() => setActiveView("products")}
-          >
-            <h3>Sản phẩm</h3>
-          </div>
-          <div
-            className={`panel-section ${
-              activeView === "inventory" ? "active" : ""
-            }`}
-            onClick={() => setActiveView("inventory")}
-          >
-            <h3>Nhập / Xuất kho</h3>
-          </div>
-        </aside>
+        <Sidebar active="warehouse" />
 
         {/* MAIN CONTENT */}
         <main style={{ flex: 1, padding: 0, overflowY: "auto", background: "#f4f6f8" }}>
@@ -115,7 +58,7 @@ export default function ProductsByWarehouse() {
 
               <button
                 type="button"
-                onClick={() => router.push("/")}
+                onClick={() => router.push("/products")}
                 style={{
                   padding: "8px 16px",
                   borderRadius: "8px",

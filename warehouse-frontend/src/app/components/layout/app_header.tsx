@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 
-export default function AppHeader() {
+interface AppHeaderProps {
+  title: string;
+}
+
+export default function AppHeader({
+  title,
+}: AppHeaderProps) {
   const [showAccount, setShowAccount] = useState(false);
 
   const fullName =
@@ -41,11 +47,11 @@ export default function AppHeader() {
           color: "#fff",
         }}
       >
-        📦 Warehouse Management
+        {title}
       </h1>
 
       {/* ACCOUNT */}
-      <div style={{ position: "relative" }}>
+      <div style={{ position: "relative", marginRight: "8px", }}>
         <button
           onClick={() => setShowAccount(!showAccount)}
           style={{
@@ -53,6 +59,7 @@ export default function AppHeader() {
             padding: "6px 12px",
             borderRadius: "8px",
             cursor: "pointer",
+            border: "none",
           }}
         >
           👤 {fullName}
@@ -72,16 +79,30 @@ export default function AppHeader() {
               overflow: "hidden",
             }}
           >
-            <button style={btnStyle}>👤 Thông tin tài khoản</button>
-            <button 
+            <button
               style={btnStyle}
               onClick={() => {
-                window.location.href = "/change-password";
+                window.location.href = "/profile";
               }}
-              >🔑 Đổi mật khẩu</button>
+            >
+              👤 Thông tin tài khoản
+            </button>
 
             <button
-              style={{ ...btnStyle, color: "red" }}
+              style={btnStyle}
+              onClick={() => {
+                window.location.href =
+                  "/change-password";
+              }}
+            >
+              🔑 Đổi mật khẩu
+            </button>
+
+            <button
+              style={{
+                ...btnStyle,
+                color: "red",
+              }}
               onClick={() => {
                 localStorage.clear();
                 window.location.href = "/login";

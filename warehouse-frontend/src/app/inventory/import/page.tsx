@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import AppHeader from "@/app/components/layout/app_header";
 
 interface Product {
   id: number;
@@ -56,19 +57,8 @@ export default function ImportStockPage() {
 
   return (
     <div className="app-container">
-     <header className="app-header">
-      <div className="logo">
-          <img
-            src="https://static.vecteezy.com/system/resources/previews/004/891/075/non_2x/the-initials-w-logo-is-simple-and-modern8868-free-vector.jpg"
-            alt="Logo"
-            style={{ width: "40px", height: "40px", objectFit: "contain" }}
-          />
-        </div>
-        <h1 style={{ fontSize: "1.6rem", margin: 0, color: "#ffffff" }}>
-            ➕ Phiếu Nhập Hàng
-        </h1>
-      </header>
-
+     <AppHeader title ="➕ Phiếu nhập hàng"/>
+      
       <main className="right-panel">
         <div className="table-card">
           <form className="form" onSubmit={handleSubmit}>

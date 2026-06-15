@@ -14,7 +14,7 @@ export default function AppLayout({
 }: Props) {
   return (
     <div className="app-container">
-      <AppHeader />
+      <AppHeader title="📦 WAREHOUSE MANAGEMENT"/>
 
       <div className="app-grid">
         <Sidebar active={active} />
