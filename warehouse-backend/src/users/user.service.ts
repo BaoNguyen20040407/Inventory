@@ -73,6 +73,9 @@ export class UsersService {
       username: data.username,
       role: data.role,
       isActive: data.isActive,
+      phone: data.phone,
+      email: data.email,
+      fullName: data.fullName,
     });
 
     return this.findOne(id);
