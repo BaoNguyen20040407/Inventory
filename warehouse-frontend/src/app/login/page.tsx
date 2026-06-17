@@ -51,7 +51,16 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="login-container">
+    <div className="login-container"
+      style={
+        {
+          backgroundImage: "url('images/login.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          minHeight: "100vh"
+        }
+      }>
       <form
         className="login-card"
         onSubmit={handleLogin}
