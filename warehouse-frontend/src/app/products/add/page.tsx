@@ -40,6 +40,8 @@ export default function AddProductPage() {
   const [warehouseId, setWarehouseId] = useState<number | "">("");
   const [unitId, setUnitId] = useState<number | "">("");
 
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState("");
   //Hàm format tiền
   const formatPrice = (value: number) =>
     value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -79,7 +81,8 @@ export default function AddProductPage() {
           category: categoryId ? { id: categoryId } : null,
           supplier: supplierId ? { id: supplierId } : null,
           warehouse: warehouseId ? { id: warehouseId } : null,
-          unit: unitId ? { id: unitId } : null
+          unit: unitId ? { id: unitId } : null,
+          imageUrl: preview
         }),
       });
   
@@ -102,7 +105,92 @@ export default function AddProductPage() {
 
       <main className="right-panel">
         <div className="table-card">
-          <form className="form" onSubmit={handleSubmit}>
+        <form
+          onSubmit={handleSubmit}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "320px 1fr",
+            gap: "24px",
+            alignItems: "start",
+          }}
+        >
+          {/* CỘT TRÁI - HÌNH ẢNH */}
+          <div
+            style={{
+              border: "1px solid #ddd",
+              borderRadius: "10px",
+              padding: "16px",
+              background: "#fff",
+            }}
+          >
+            <h3 style={{ marginBottom: "12px" }}>
+              Hình ảnh sản phẩm
+            </h3>
+
+            <div
+              style={{
+                width: "100%",
+                height: "280px",
+                border: "2px dashed #ccc",
+                borderRadius: "10px",
+                overflow: "hidden",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginBottom: "12px",
+              }}
+            >
+              {preview ? (
+                <img
+                  src={preview}
+                  alt="Preview"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                  }}
+                />
+              ) : (
+                <span>Chưa có hình ảnh</span>
+              )}
+            </div>
+
+            <input
+              id="product-image"
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+
+                setImageFile(file);
+                setPreview(URL.createObjectURL(file));
+              }}
+            />
+
+            <label
+              htmlFor="product-image"
+              className="btn btn-green"
+              style={{
+                display: "block",
+                textAlign: "center",
+                cursor: "pointer",
+              }}
+            >
+              📷 Chọn ảnh
+            </label>
+          </div>
+
+          {/* CỘT PHẢI - THÔNG TIN */}
+          <div
+            style={{
+              display: "grid",
+              gap: "12px",
+            }}
+          >
+            <h3>Thông tin sản phẩm</h3>
+
             <input
               type="text"
               placeholder="Tên sản phẩm"
@@ -117,7 +205,7 @@ export default function AddProductPage() {
               placeholder="Giá"
               value={formatPrice(price)}
               onChange={(e) => {
-                const raw = e.target.value.replace(/\./g, ""); // bỏ dấu chấm
+                const raw = e.target.value.replace(/\./g, "");
                 const num = Number(raw) || 0;
                 setPrice(num);
               }}
@@ -126,22 +214,23 @@ export default function AddProductPage() {
             />
 
             <input
-                type="number"
-                placeholder="Số lượng"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                required
-                className="form-input"
+              type="number"
+              placeholder="Số lượng"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              required
+              className="form-input"
             />
 
-            {/* Dropdown Unit */}
             <select
               value={unitId}
               onChange={(e) => setUnitId(Number(e.target.value))}
               className="form-input"
               required
             >
-              <option value="">-- Chọn loại đơn vị tính --</option>
+              <option value="">
+                -- Chọn loại đơn vị tính --
+              </option>
               {units.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
@@ -149,14 +238,15 @@ export default function AddProductPage() {
               ))}
             </select>
 
-            {/* Dropdown Category */}
             <select
               value={categoryId}
               onChange={(e) => setCategoryId(Number(e.target.value))}
               className="form-input"
               required
             >
-              <option value="">-- Chọn loại sản phẩm --</option>
+              <option value="">
+                -- Chọn loại sản phẩm --
+              </option>
               {categories.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
@@ -164,29 +254,35 @@ export default function AddProductPage() {
               ))}
             </select>
 
-            {/* Dropdown Supplier */}
-                <select
-                value={supplierId || ""}
-                onChange={(e) => setSupplierId(Number(e.target.value))}
-                className="form-input"
-                required
-                >
-                <option value="">-- Chọn nhà cung cấp --</option>
-                {suppliers.map((s) => (
-                    <option key={s.id} value={s.id}>
-                    {s.name}
-                    </option>
-                ))}
-                </select>
-            
-            {/* Dropdown Warehouse */}
             <select
-              value={warehouseId}
-              onChange={(e) => setWarehouseId(Number(e.target.value))}
+              value={supplierId || ""}
+              onChange={(e) =>
+                setSupplierId(Number(e.target.value))
+              }
               className="form-input"
               required
             >
-              <option value="">-- Chọn kho hàng --</option>
+              <option value="">
+                -- Chọn nhà cung cấp --
+              </option>
+              {suppliers.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={warehouseId}
+              onChange={(e) =>
+                setWarehouseId(Number(e.target.value))
+              }
+              className="form-input"
+              required
+            >
+              <option value="">
+                -- Chọn kho hàng --
+              </option>
               {warehouses.map((w) => (
                 <option key={w.id} value={w.id}>
                   {w.name}
@@ -194,11 +290,14 @@ export default function AddProductPage() {
               ))}
             </select>
 
-
             <div className="form-actions">
-              <button type="submit" className="btn btn-green">
+              <button
+                type="submit"
+                className="btn btn-green"
+              >
                 Lưu
               </button>
+
               <button
                 type="button"
                 className="btn btn-gray"
@@ -207,7 +306,8 @@ export default function AddProductPage() {
                 Hủy
               </button>
             </div>
-          </form>
+          </div>
+        </form>
         </div>
       </main>
     </div>

@@ -54,10 +54,12 @@ export class ProductsService {
       name: data.name,
       price: data.price,
       quantity: data.quantity,
+    
       category: category || undefined,
       supplier: supplier || undefined,
       warehouse: warehouse || undefined,
       unit: unit || undefined,
+      imageUrl: data.imageUrl || null
     };
   
     return this.productRepo.save(product);

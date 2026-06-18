@@ -34,4 +34,10 @@ export class Product {
   @ManyToOne(() => Unit, unit => unit.products, {nullable: true})
   @JoinColumn({ name: 'unit_id'})
   unit: Unit;
+
+  @Column({
+    name: 'image_url',
+    nullable: true,
+  })
+  imageUrl: string;
 }
