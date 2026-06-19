@@ -28,6 +28,24 @@ export default function EditProductPage() {
 
   const [loading, setLoading] = useState(true);
 
+  const uploadImage = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+  
+    const res = await fetch("http://localhost:3000/upload/image", {
+      method: "POST",
+      body: formData,
+    });
+  
+    const data = await res.json();
+  
+    if (!res.ok) {
+      throw new Error(data?.message || "Upload thất bại");
+    }
+  
+    return data.url; // secure_url từ backend
+  };
+
   const formatPrice = (value: number) =>
     value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
@@ -77,6 +95,13 @@ export default function EditProductPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    let finalImageUrl = imageUrl;
+
+    // nếu user đổi ảnh
+    if (imageFile) {
+      finalImageUrl = await uploadImage(imageFile);
+    }
+
     const res = await fetch(`http://localhost:3000/products/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -88,7 +113,7 @@ export default function EditProductPage() {
         category: categoryId ? { id: categoryId } : null,
         warehouse: warehouseId ? { id: warehouseId } : null,
         unit: unitId ? { id: unitId } : null,
-        imageUrl: imageUrl,
+        imageUrl: finalImageUrl,
       }),
     });
 

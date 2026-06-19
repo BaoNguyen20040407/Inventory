@@ -68,9 +68,55 @@ export default function AddProductPage() {
     fetchData();
   }, []);
 
+  const uploadImage = async (file: File) => {
+    console.log("📤 START UPLOAD IMAGE");
+    console.log("FILE INFO:", {
+      name: file.name,
+      size: file.size,
+      type: file.type,
+    });
+  
+    const formData = new FormData();
+    formData.append("file", file);
+  
+    const res = await fetch("http://localhost:3000/upload/image", {
+      method: "POST",
+      body: formData,
+    });
+  
+    console.log("📡 RESPONSE STATUS:", res.status);
+  
+    const text = await res.text();
+    console.log("📦 RAW RESPONSE:", text);
+  
+    let data;
+    try {
+      data = JSON.parse(text);
+      console.log("✅ PARSED RESPONSE:", data);
+    } catch (err) {
+      console.error("❌ JSON PARSE ERROR:", err);
+    }
+  
+    if (!res.ok) {
+      console.error("❌ UPLOAD FAILED:", data || text);
+      throw new Error(data?.message || text || "Upload thất bại");
+    }
+  
+    return data;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+  
     try {
+      let imageUrl = "";
+  
+      // ✔ upload thật lên Cloudinary
+      if (imageFile) {
+        const uploadRes = await uploadImage(imageFile);
+        imageUrl = uploadRes.url || uploadRes.secure_url;
+      }
+  
       const res = await fetch("http://localhost:3000/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -82,22 +128,23 @@ export default function AddProductPage() {
           supplier: supplierId ? { id: supplierId } : null,
           warehouse: warehouseId ? { id: warehouseId } : null,
           unit: unitId ? { id: unitId } : null,
-          imageUrl: preview
+          imageUrl: imageUrl || null,
         }),
       });
   
+      const data = await res.text();
+  
       if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(`Lưu sản phẩm thất bại: ${res.status} - ${errorText}`);
+        throw new Error(data);
       }
   
       router.push("/products");
       router.refresh();
     } catch (err) {
-      console.error(err);
+      console.error("❌ Lỗi lưu sản phẩm:", err);
       alert("Có lỗi khi lưu sản phẩm");
     }
-  };  
+  };
 
   return (
     <div className="app-container">

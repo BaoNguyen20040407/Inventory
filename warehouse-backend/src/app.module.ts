@@ -15,9 +15,14 @@ import { UnitModule } from './unit/unit.module';
 import { User } from './users/user.entity';
 import { UsersModule } from './users/user.module';
 import { AuthModule } from './auth/auth.module';
+import { UploadModule } from './upload/upload.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, 
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -35,7 +40,8 @@ import { AuthModule } from './auth/auth.module';
     WarehouseModule,
     UnitModule,
     UsersModule,
-    AuthModule
+    AuthModule,
+    UploadModule
   ],
 })
 export class AppModule {}
