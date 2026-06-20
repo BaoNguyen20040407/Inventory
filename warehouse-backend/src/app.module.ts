@@ -24,14 +24,20 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true, 
     }),
     TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'warehouse',
+      type: 'postgres',
+      url: process.env.DATABASE_URL,
+    
       entities: [Product, Category, Supplier, Inventory, Warehouse, Unit, User],
-      synchronize: false,
+    
+      synchronize: true,
+    
+      autoLoadEntities: true,
+    
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    
+      logging: true,
     }),
     ProductsModule,
     SupplierModule,
