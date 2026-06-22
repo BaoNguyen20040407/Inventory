@@ -5,19 +5,14 @@ import WarehouseTable from "../components/warehouse_table";
 import { useWarehouse } from "../hooks/useWarehouse";
 
 export default function WarehousePage() {
-  const warehouseHook = useWarehouse();
-
-  const handleDelete = (id: number) => {
-    console.log("delete warehouse:", id);
-    // TODO: gọi API delete
-  };
+  const { warehouse, loading, deleteWarehouse } = useWarehouse();
 
   return (
     <AppLayout active="warehouse">
       <WarehouseTable
-        warehouse={warehouseHook.warehouse}
-        loading={warehouseHook.loading}
-        onDelete={handleDelete}
+        warehouse={warehouse}
+        loading={loading}
+        onDelete={deleteWarehouse}
       />
     </AppLayout>
   );

@@ -5,18 +5,13 @@ import SuppliersTable from "../components/suppliers_table";
 import { useSuppliers } from "../hooks/useSuppliers";
 
 export default function SupplierPage() {
-  const supplierHook = useSuppliers();
-
-  const deleteSupplier = (id: number) => {
-    console.log("delete supplier:", id);
-    // TODO: call API delete
-  };
+  const { suppliers, loading, deleteSupplier } = useSuppliers();
 
   return (
     <AppLayout active="suppliers">
       <SuppliersTable
-        suppliers={supplierHook.suppliers}
-        loading={supplierHook.loading}
+        suppliers={suppliers}
+        loading={loading}
         deleteSupplier={deleteSupplier}
       />
     </AppLayout>

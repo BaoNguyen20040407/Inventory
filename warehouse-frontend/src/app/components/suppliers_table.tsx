@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 interface Props {
   suppliers: Supplier[];
   loading: boolean;
-  deleteSupplier: (id: number) => void;
+  deleteSupplier: (id: number) => Promise<void>;
 }
 
 export default function SuppliersTable({ suppliers, loading, deleteSupplier }: Props) {
@@ -22,9 +22,9 @@ export default function SuppliersTable({ suppliers, loading, deleteSupplier }: P
     (s.phone || "").toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleDelete = (id: number) => {
-    if(confirm("Bạn có chắc muốn xóa nhà cung cấp này không?")) {
-      deleteSupplier(id);
+  const handleDelete = async (id: number) => {
+    if (confirm("Bạn có chắc muốn xóa nhà cung cấp này không?")) {
+      await deleteSupplier(id);
       alert("Xóa thành công");
     }
   };

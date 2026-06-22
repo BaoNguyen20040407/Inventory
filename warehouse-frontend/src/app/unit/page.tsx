@@ -5,19 +5,14 @@ import UnitTable from "../components/units_table";
 import { useUnits } from "../hooks/useUnits";
 
 export default function UnitPage() {
-  const unitHook = useUnits();
-
-  const handleDelete = (id: number) => {
-    console.log("delete unit:", id);
-    // TODO: call API delete
-  };
+  const { units, loading, deleteUnit } = useUnits();
 
   return (
     <AppLayout active="unit">
       <UnitTable
-        units={unitHook.units}
-        loading={unitHook.loading}
-        onDelete={handleDelete}
+        units={units}
+        loading={loading}
+        onDelete={deleteUnit}
       />
     </AppLayout>
   );

@@ -144,6 +144,9 @@ export default function AddUserPage() {
               <button
                 type="submit"
                 className="btn btn-green"
+                onClick={() =>
+                  router.push("/users")
+                }
               >
                 Lưu
               </button>

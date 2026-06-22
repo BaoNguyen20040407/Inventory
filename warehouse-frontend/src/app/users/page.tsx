@@ -5,19 +5,14 @@ import UsersTable from "../components/users_table";
 import { useUsers } from "../hooks/useUsers";
 
 export default function UserPage() {
-  const userHook = useUsers();
-
-  const handleDelete = (id: number) => {
-    console.log("delete user:", id);
-    // TODO: call API delete
-  };
+  const { users, loading, deleteUser } = useUsers();
 
   return (
     <AppLayout active="users">
       <UsersTable
-        users={userHook.users}
-        loading={userHook.loading}
-        onDelete={handleDelete}
+        users={users}
+        loading={loading}
+        onDelete={deleteUser}
       />
     </AppLayout>
   );

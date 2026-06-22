@@ -21,6 +21,11 @@ interface Props {
 export default function StockMovementsTable({ movements, loading, products }: Props) {
   const router = useRouter();
   const [search, setSearch] = useState("");
+  const toVNTime = (date: string) => {
+    return new Date(
+      new Date(date).getTime() + 7 * 60 * 60 * 1000
+    );
+  };
 
   if (loading) {
     return <p style={{ padding: 16, color: "#6b7280" }}>Đang tải dữ liệu...</p>;
@@ -75,7 +80,7 @@ export default function StockMovementsTable({ movements, loading, products }: Pr
       "Số lượng": m.quantity,
       "Loại": m.type === "Import" ? "Nhập" : "Xuất",
       "Lý do": m.reason || "-",
-      "Ngày giờ": new Date(m.created).toLocaleString(),
+      "Ngày giờ": toVNTime(m.created).toLocaleString(),
     }));
   
     // Tạo worksheet
@@ -207,7 +212,9 @@ export default function StockMovementsTable({ movements, loading, products }: Pr
                 <td>{m.quantity}</td>
                 <td>{m.type === "Import" ? "Nhập" : "Xuất"}</td>
                 <td>{m.reason || "-"}</td>
-                <td>{new Date(m.created).toLocaleString("vi-VN")}</td>
+                <td>
+                  {toVNTime(m.created).toLocaleString("vi-VN")}
+                </td>
                 <td>
                 <button
                   onClick={async () => {
@@ -228,7 +235,7 @@ export default function StockMovementsTable({ movements, loading, products }: Pr
                         PHIẾU ${m.type === "Import" ? "NHẬP" : "XUẤT"} KHO
                       </h3>
 
-                      <p><b>Ngày lập phiếu:</b> ${new Date(m.created).toLocaleString("vi-VN")}</p>
+                      <p><b>Ngày lập phiếu:</b> ${toVNTime(m.created).toLocaleString("vi-VN")}</p>
 
                       <table style="width:100%; border-collapse:collapse; margin:20px 0;">
                         <thead>
