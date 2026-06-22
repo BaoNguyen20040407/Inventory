@@ -7,6 +7,10 @@ export default function EditProductPage() {
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
+  interface Option {
+    id: number;
+    name: string;
+  }
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState<number>(0);
@@ -21,10 +25,10 @@ export default function EditProductPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
 
-  const [suppliers, setSuppliers] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
-  const [warehouses, setWarehouses] = useState<any[]>([]);
-  const [units, setUnits] = useState<any[]>([]);
+  const [suppliers, setSuppliers] = useState<Option[]>([]);
+  const [categories, setCategories] = useState<Option[]>([]);
+  const [warehouses, setWarehouses] = useState<Option[]>([]);
+  const [units, setUnits] = useState<Option[]>([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +36,7 @@ export default function EditProductPage() {
     const formData = new FormData();
     formData.append("file", file);
   
-    const res = await fetch("http://localhost:3000/upload/image", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload/image`, {
       method: "POST",
       body: formData,
     });
@@ -56,10 +60,10 @@ export default function EditProductPage() {
     const fetchData = async () => {
       try {
         const [supRes, catRes, warRes, unitRes] = await Promise.all([
-          fetch("http://localhost:3000/suppliers"),
-          fetch("http://localhost:3000/categories"),
-          fetch("http://localhost:3000/warehouse"),
-          fetch("http://localhost:3000/unit"),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/suppliers`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/unit`),
         ]);
 
         setSuppliers(await supRes.json());
@@ -67,7 +71,7 @@ export default function EditProductPage() {
         setWarehouses(await warRes.json());
         setUnits(await unitRes.json());
 
-        const res = await fetch(`http://localhost:3000/products/${id}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`);
         const data = await res.json();
 
         setName(data.name || "");
@@ -102,7 +106,7 @@ export default function EditProductPage() {
       finalImageUrl = await uploadImage(imageFile);
     }
 
-    const res = await fetch(`http://localhost:3000/products/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

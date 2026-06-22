@@ -17,7 +17,7 @@ export default function EditCategoryPage() {
     if (!id) return;
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/categories/${id}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`);
         if (!res.ok) throw new Error("Không tìm thấy nhà cung cấp");
         const data = await res.json();
         setName(data.name || "");
@@ -36,7 +36,7 @@ export default function EditCategoryPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:3000/categories/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, description}),

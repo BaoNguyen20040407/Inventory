@@ -12,7 +12,7 @@ export default function AddWarehousePage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-          const res = await fetch("http://localhost:3000/warehouse", {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, address, manager }),
@@ -20,7 +20,7 @@ export default function AddWarehousePage() {
     
           if (!res.ok) {
             const errorText = await res.text();
-            throw new Error(`Lưu nhà cung cấp thất bại: ${res.status} - ${errorText}`);
+            throw new Error("Lưu nhà cung cấp thất bại: ${res.status} - ${errorText}");
           }
     
           router.push("/warehouse");

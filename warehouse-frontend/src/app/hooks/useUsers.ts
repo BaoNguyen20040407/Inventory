@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 
 export interface User {
   id: number;
+  fullName: string; 
+  phone: string;
   username: string;
   role: string;
-  is_active: boolean;
+  isActive: boolean;
   created_at: string;
 }
 
@@ -14,7 +16,7 @@ export function useUsers() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("http://localhost:3000/users", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -32,7 +34,7 @@ export function useUsers() {
   //Thêm đơn vị tính
       const addUsers = async (unit: Omit<User, "id">) => {
           try {
-          const res = await fetch("http://localhost:3000/unit", {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/unit`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(unit),
@@ -46,7 +48,7 @@ export function useUsers() {
 
   const deleteUser = async (id: number) => {
     try {
-      await fetch(`http://localhost:3000/users/${id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

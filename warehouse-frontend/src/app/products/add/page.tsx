@@ -51,10 +51,10 @@ export default function AddProductPage() {
     const fetchData = async () => {
       try {
         const [catRes, supRes, warRes, unitRes] = await Promise.all([
-          fetch("http://localhost:3000/categories"),
-          fetch("http://localhost:3000/suppliers"),
-          fetch("http://localhost:3000/warehouse"),
-          fetch("http://localhost:3000/unit")
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/suppliers`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/unit`)
         ]);
 
         if (catRes.ok) setCategories(await catRes.json());
@@ -79,7 +79,7 @@ export default function AddProductPage() {
     const formData = new FormData();
     formData.append("file", file);
   
-    const res = await fetch("http://localhost:3000/upload/image", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload/image`, {
       method: "POST",
       body: formData,
     });
@@ -117,7 +117,7 @@ export default function AddProductPage() {
         imageUrl = uploadRes.url || uploadRes.secure_url;
       }
   
-      const res = await fetch("http://localhost:3000/products", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -16,7 +16,7 @@ export function useSuppliers() {
   const fetchSuppliers = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:3000/suppliers");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/suppliers`);
       const data = await res.json();
       setSuppliers(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -30,7 +30,7 @@ export function useSuppliers() {
   // Thêm nhà cung cấp
   const addSupplier = async (supplier: Omit<Supplier, "id">) => {
     try {
-      const res = await fetch("http://localhost:3000/suppliers", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/suppliers`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(supplier),
@@ -45,7 +45,7 @@ export function useSuppliers() {
   // Xóa nhà cung cấp
   const deleteSupplier = async (id: number) => {
     try {
-      await fetch(`http://localhost:3000/suppliers/${id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/suppliers/${id}`, {
         method: "DELETE",
       });
       setSuppliers((prev) => prev.filter((s) => s.id !== id));

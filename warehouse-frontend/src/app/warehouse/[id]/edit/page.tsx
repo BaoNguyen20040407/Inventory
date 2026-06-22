@@ -18,7 +18,7 @@ export default function EditWarehousePage() {
     if (!id) return;
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/warehouse/${id}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse/${id}`);
         if (!res.ok) throw new Error("Không tìm thấy kho hàng");
         const data = await res.json();
         setName(data.name || "");
@@ -38,7 +38,7 @@ export default function EditWarehousePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:3000/warehouse/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, address, manager }),

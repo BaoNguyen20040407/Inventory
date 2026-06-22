@@ -19,7 +19,7 @@ export default function ImportStockPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:3000/products");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`);
         if (res.ok) setProducts(await res.json());
       } catch (err) {
         console.error("Lỗi khi load sản phẩm:", err);
@@ -31,7 +31,7 @@ export default function ImportStockPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3000/inventory", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/inventory`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -44,7 +44,7 @@ export default function ImportStockPage() {
 
       if (!res.ok) {
         const errorText = await res.text();
-        throw new Error(`Thêm phiếu nhập thất bại: ${res.status} - ${errorText}`);
+        throw new Error("Thêm phiếu nhập thất bại: ${res.status} - ${errorText}");
       }
 
       router.push("/inventory");

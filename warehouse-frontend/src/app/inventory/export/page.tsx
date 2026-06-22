@@ -18,7 +18,7 @@ export default function ExportStockPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:3000/products");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`);
         if (res.ok) setProducts(await res.json());
       } catch (err) {
         console.error("Lỗi khi load sản phẩm:", err);
@@ -30,7 +30,7 @@ export default function ExportStockPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3000/inventory", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/inventory`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

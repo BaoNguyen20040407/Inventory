@@ -29,7 +29,7 @@ export default function InventoryStatsPage() {
   useEffect(() => {
     const loadMovements = async () => {
       try {
-        const res = await fetch("http://localhost:3000/inventory/movements");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/inventory/movements`);
         if (res.ok) {
           const data = await res.json();
           console.log("📊 Movements API data:", data);
@@ -48,7 +48,7 @@ export default function InventoryStatsPage() {
 
     const loadProducts = async () => {
       try {
-        const res = await fetch("http://localhost:3000/products");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`);
         if (res.ok) {
           const data = await res.json();
           setProducts(data);

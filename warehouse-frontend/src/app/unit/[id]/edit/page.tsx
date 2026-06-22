@@ -17,7 +17,7 @@ export default function EditUnitPage() {
         if (!id) return;
         const fetchData = async () => {
             try {
-                const res = await fetch(`http://localhost:3000/unit/${id}`);
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/unit/${id}`);
                 if (!res.ok) throw new Error("Không tìm thấy đơn vị tính");
                 const data = await res.json();
                 setName(data.name || "");
@@ -36,7 +36,7 @@ export default function EditUnitPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-          const res = await fetch(`http://localhost:3000/unit/${id}`, {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/unit/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, description: description || null }),

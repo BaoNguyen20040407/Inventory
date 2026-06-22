@@ -15,7 +15,7 @@ export function useWarehouse() {
     const fetchWarehouse = async () => {
         try {
             setLoading(true);
-            const res = await fetch("http://localhost:3000/warehouse");
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse`);
             const data = await res.json();
             setWarehouse(Array.isArray(data) ? data : []);
         } catch (err) {
@@ -29,7 +29,7 @@ export function useWarehouse() {
     // Thêm loại sản phẩm
   const addWarehouse = async (category: Omit<Warehouse, "id">) => {
     try {
-      const res = await fetch("http://localhost:3000/warehouse", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(category),
@@ -44,7 +44,7 @@ export function useWarehouse() {
   // Xóa loại sản phẩm
   const deleteWarehouse = async (id: number) => {
     try {
-      await fetch(`http://localhost:3000/warehouse/${id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse/${id}`, {
         method: "DELETE",
       });
       setWarehouse((prev) => prev.filter((c) => c.id !== id));

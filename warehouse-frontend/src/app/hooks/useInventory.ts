@@ -18,7 +18,11 @@ export function useStockMovements() {
   const fetchMovements = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:3000/inventory");
+  
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/inventory`
+      );
+  
       const data = await res.json();
       setMovements(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -30,14 +34,21 @@ export function useStockMovements() {
   };
 
   // Thêm phiếu nhập/xuất kho
-  const addMovement = async (movement: Omit<StockMovement, "id" | "created">) => {
+  const addMovement = async (
+    movement: Omit<StockMovement, "id" | "created">
+  ) => {
     try {
-      const res = await fetch("http://localhost:3000/inventory", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(movement),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/inventory`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(movement),
+        }
+      );
+  
       if (!res.ok) throw new Error("Thêm nhập/xuất kho thất bại");
+  
       await fetchMovements();
     } catch (err) {
       console.error(err);
@@ -48,7 +59,7 @@ export function useStockMovements() {
   // 📌 Xóa phiếu nhập/xuất kho
   const deleteMovement = async (id: number) => {
     try {
-      await fetch(`http://localhost:3000/inventory/${id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/inventory/${id}`, {
         method: "DELETE",
       });
       setMovements((prev) => prev.filter((m) => m.id !== id));

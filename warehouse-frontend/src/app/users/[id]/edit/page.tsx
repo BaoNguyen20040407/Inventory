@@ -24,7 +24,7 @@ export default function EditUserPage() {
     const fetchUser = async () => {
       try {
         const res = await fetch(
-          `http://localhost:3000/users/${id}`
+          `${process.env.NEXT_PUBLIC_API_URL}/users/${id}`
         );
 
         if (!res.ok)
@@ -57,7 +57,7 @@ export default function EditUserPage() {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/users/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users/${id}`,
         {
           method: "PUT",
           headers: {

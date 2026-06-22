@@ -17,7 +17,7 @@ export function useProducts() {
 
   const fetchProducts = async () => {
     setLoading(true);
-    const res = await fetch("http://localhost:3000/products");
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`);
     const data = await res.json();
     setProducts(Array.isArray(data) ? data : []);
     setLoading(false);
@@ -29,7 +29,7 @@ export function useProducts() {
     const newQty = product.quantity + change;
     if (newQty < 0) return alert("Số lượng không đủ để xuất");
 
-    await fetch(`http://localhost:3000/products/${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ quantity: newQty }),

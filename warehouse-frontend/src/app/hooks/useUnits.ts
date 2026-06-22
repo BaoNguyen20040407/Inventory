@@ -14,7 +14,7 @@ export function useUnits() {
     const fetchUnits = async () => {
         try {
             setLoading(true);
-            const res = await fetch("http://localhost:3000/unit");
+            const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/unit");
             const data = await res.json();
             setUnits(Array.isArray(data) ? data : []);
         } catch (err) {
@@ -28,7 +28,7 @@ export function useUnits() {
     //Thêm đơn vị tính
     const addUnit = async (unit: Omit<Unit, "id">) => {
         try {
-        const res = await fetch("http://localhost:3000/unit", {
+        const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/unit", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(unit),
@@ -43,7 +43,7 @@ export function useUnits() {
     //Xóa đơn vị tính
     const deleteUnit = async (id: number) => {
         try {
-        await fetch(`http://localhost:3000/unit/${id}`, {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/unit/${id}`, {
             method: "DELETE",
         });
         setUnits((prev) => prev.filter((c) => c.id !== id));
