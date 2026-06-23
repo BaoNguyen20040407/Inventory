@@ -14,7 +14,7 @@ export function useUnits() {
     const fetchUnits = async () => {
         try {
             setLoading(true);
-            const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/unit");
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/unit`);
             const data = await res.json();
             setUnits(Array.isArray(data) ? data : []);
         } catch (err) {
