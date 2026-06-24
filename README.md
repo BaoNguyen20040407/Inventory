@@ -199,9 +199,7 @@ The dashboard provides real-time information including:
 
 ### Dashboard
 
-Add dashboard screenshots here.
-
----
+<img width="1917" height="977" alt="image" src="https://github.com/user-attachments/assets/5ba35baa-0f0a-4009-a14c-a8b1f606e66a" />
 
 ## 🎯 Future Improvements
 
