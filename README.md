@@ -1,75 +1,120 @@
 # 📦 Warehouse Management System
 
-A web-based Warehouse Management System designed to streamline inventory control, product management, supplier management, and warehouse operations.
+A full-stack Warehouse Management System built to simplify inventory control, stock tracking, supplier management, and warehouse operations. The application provides real-time inventory monitoring, import/export management, reporting capabilities, and role-based user access.
+
+---
 
 ## 🚀 Live Demo
 
-**Frontend:**
+### Frontend
+
 https://inventory-three-black.vercel.app
 
-**Backend API:**
-(Add your Swagger API URL here)
+### Backend API Documentation
 
-## 📖 Overview
+(Add your Swagger URL here)
 
-This project provides a comprehensive solution for managing warehouse operations, including inventory tracking, stock movements, suppliers, product categories, and user management.
+---
 
-The system helps organizations monitor stock levels, manage incoming and outgoing goods, and maintain accurate inventory records in real time.
+## 📖 Project Overview
 
+The Warehouse Management System is designed to help businesses efficiently manage inventory, suppliers, warehouse transactions, and stock movements.
 
-## ✨ Features
+The system supports:
 
-### Dashboard
+* Inventory tracking
+* Product management
+* Supplier management
+* Import and export operations
+* Real-time stock updates
+* Report generation
+* User authentication and authorization
+
+---
+
+## ✨ Key Features
+
+### 📊 Dashboard & Analytics
 
 * Total products overview
 * Total suppliers overview
-* Total product categories overview
-* Import/Export receipt statistics
-* Import receipt statistics
-* Export receipt statistics
+* Product category statistics
+* Import/Export transaction statistics
 * Low-stock product alerts
-* Total inventory quantity
+* Total inventory quantity monitoring
+* Real-time warehouse insights
 
-### Product Management
+### 📦 Product Management
 
-* Create products
+* Create new products
 * Update product information
 * Delete products
-* Search products
-* Monitor stock quantity
+* Search and filter products
+* Track inventory quantity
 
-### Inventory Management
+### 🏷️ Category Management
 
-* Record stock imports
-* Record stock exports
-* Automatically update inventory levels
-* Maintain transaction history
+* Create product categories
+* Update category information
+* Delete categories
 
-### Supplier Management
+### 📏 Unit Management
 
-* Add suppliers
+* Manage measurement units
+* Create, update, and delete units
+
+### 🚚 Supplier Management
+
+* Create suppliers
 * Update supplier information
 * Delete suppliers
 * Search suppliers
 
-### Product Category Management
+### 📥 Stock Import Management
 
-* Create categories
-* Update categories
-* Delete categories
+* Create import receipts
+* Add imported products
+* Automatically update inventory levels
+* Maintain import history
 
-### Unit Management
+### 📤 Stock Export Management
 
-* Create measurement units
-* Update units
-* Delete units
+* Create export receipts
+* Record outgoing products
+* Automatically deduct inventory quantity
+* Maintain export history
 
-### User Management
+### 📑 Reporting & Export
 
-* User authentication
+* Export reports to Excel (.xlsx)
+* Export reports to PDF
+* Generate inventory reports
+* Generate warehouse transaction reports
+
+### 👥 User Management
+
+* Secure login system
+* JWT Authentication
+* Role-based authorization
 * User account management
-* Role-based access control
 
+---
+
+## 🏗️ System Architecture
+
+Frontend and Backend are separated into independent services:
+
+```text
+Frontend (Next.js)
+        │
+        ▼
+REST API (NestJS)
+        │
+        ▼
+PostgreSQL Database
+```
+
+---
 
 ## 🛠️ Technology Stack
 
@@ -87,17 +132,23 @@ The system helps organizations monitor stock levels, manage incoming and outgoin
 * TypeORM
 * PostgreSQL
 * JWT Authentication
-* Swagger API Documentation
+* Swagger
+
+### Database
+
+* PostgreSQL
 
 ### Deployment
 
 * Frontend: Vercel
+* Backend: NestJS Server
 * Database: PostgreSQL
 
+---
 
 ## 🗄️ Database Design
 
-Main entities include:
+Main entities:
 
 * Users
 * Products
@@ -109,30 +160,16 @@ Main entities include:
 * ExportReceipts
 * ReceiptDetails
 
+---
 
-## ⚙️ Installation
+## ⚙️ Installation Guide
 
 ### Clone Repository
 
 ```bash
 git clone https://github.com/your-username/warehouse-management-system.git
+
 cd warehouse-management-system
-```
-
-### Frontend Setup
-
-```bash
-cd frontend
-
-npm install
-
-npm run dev
-```
-
-Create a `.env.local` file:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:3000
 ```
 
 ---
@@ -159,57 +196,82 @@ DB_NAME=warehouse_management
 JWT_SECRET=your_secret_key
 ```
 
+---
+
+### Frontend Setup
+
+```bash
+cd frontend
+
+npm install
+
+npm run dev
+```
+
+Create a `.env.local` file:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3000
+```
+
+---
 
 ## 📡 API Documentation
 
-Swagger documentation is available after starting the backend server:
+Swagger documentation is available after starting the backend:
 
 ```bash
 http://localhost:3000/api
 ```
 
-The API documentation includes:
+Swagger provides:
 
-* Endpoint descriptions
-* Request/Response schemas
-* Interactive API testing
+* API endpoint documentation
+* Request and response schemas
+* Authentication testing
+* Interactive API execution
 
+---
 
-## 📊 Dashboard Statistics
+## 🔐 Authentication & Security
 
-The dashboard provides real-time information including:
+The system uses:
 
-* Product count
-* Supplier count
-* Product category count
-* Import/Export receipt count
-* Low-stock products
-* Total inventory quantity
+* JWT Authentication
+* Protected API Routes
+* Role-Based Access Control (RBAC)
+* Secure Password Handling
 
+---
 
-## 🔐 Authentication & Authorization
+## 📊 Reports
 
-* JWT-based authentication
-* Protected routes
-* Role-based authorization
-* Secure API access
+The application supports exporting data in multiple formats:
 
+* Excel Reports (.xlsx)
+* PDF Reports
+* Inventory Reports
+* Transaction Reports
+
+---
 
 ## 📷 Screenshots
 
 ### Dashboard
+<img width="1861" height="881" alt="image" src="https://github.com/user-attachments/assets/779b3a4e-aeae-4605-a58f-7f09b24d502b" />
 
-<img width="1917" height="977" alt="image" src="https://github.com/user-attachments/assets/5ba35baa-0f0a-4009-a14c-a8b1f606e66a" />
 
-## 🎯 Future Improvements
+## 🎯 Future Enhancements
 
-* Inventory reports and analytics
-* Export reports to Excel/PDF
-* Advanced search and filtering
-* Audit logs
-* Multi-warehouse support
-* Email notifications for low-stock products
+* Barcode / QR Code Integration
+* Multi-Warehouse Support
+* Email Notifications
+* Advanced Analytics Dashboard
+* Inventory Forecasting
+* Activity Logs & Auditing
+* Mobile Optimization
 
+---
 
 ## 👨‍💻 Author
 
@@ -217,7 +279,8 @@ The dashboard provides real-time information including:
 
 Academic Year 2025 – 2026
 
+---
 
 ## 📄 License
 
-This project was developed for educational and learning purposes.
+This project was developed for educational and academic purposes.
