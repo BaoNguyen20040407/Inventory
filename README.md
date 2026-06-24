@@ -8,13 +8,11 @@ A full-stack Warehouse Management System built to simplify inventory control, st
 
 ### Frontend
 
-https://inventory-three-black.vercel.app
+[https://inventory-three-black.vercel.app](url)
 
 ### Backend API Documentation
 
-[(Add your Swagger URL here)
-](https://inventory-ohr0.onrender.com/api)
-
+[https://inventory-ohr0.onrender.com/api](url)
 
 ## 📖 Project Overview
 
