@@ -12,8 +12,8 @@ https://inventory-three-black.vercel.app
 
 ### Backend API Documentation
 
-(Add your Swagger URL here)
-
+[(Add your Swagger URL here)
+](https://inventory-ohr0.onrender.com/api)
 
 
 ## 📖 Project Overview
