@@ -2,7 +2,7 @@
 
 A full-stack Warehouse Management System built to simplify inventory control, stock tracking, supplier management, and warehouse operations. The application provides real-time inventory monitoring, import/export management, reporting capabilities, and role-based user access.
 
----
+
 
 ## 🚀 Live Demo
 
@@ -14,7 +14,7 @@ https://inventory-three-black.vercel.app
 
 (Add your Swagger URL here)
 
----
+
 
 ## 📖 Project Overview
 
@@ -30,7 +30,7 @@ The system supports:
 * Report generation
 * User authentication and authorization
 
----
+
 
 ## ✨ Key Features
 
@@ -98,7 +98,7 @@ The system supports:
 * Role-based authorization
 * User account management
 
----
+
 
 ## 🏗️ System Architecture
 
@@ -114,7 +114,7 @@ REST API (NestJS)
 PostgreSQL Database
 ```
 
----
+
 
 ## 🛠️ Technology Stack
 
@@ -144,23 +144,19 @@ PostgreSQL Database
 * Backend: NestJS Server
 * Database: PostgreSQL
 
----
+
 
 ## 🗄️ Database Design
 
 Main entities:
 
-* Users
-* Products
-* Categories
-* Suppliers
-* Units
-* Warehouses
-* ImportReceipts
-* ExportReceipts
-* ReceiptDetails
-
----
+* Product
+* Category
+* Supplier
+* Inventory
+* Warehouse
+* Unit
+* User
 
 ## ⚙️ Installation Guide
 
@@ -172,12 +168,11 @@ git clone https://github.com/your-username/warehouse-management-system.git
 cd warehouse-management-system
 ```
 
----
 
 ### Backend Setup
 
 ```bash
-cd backend
+cd warehouse-backend
 
 npm install
 
@@ -196,12 +191,11 @@ DB_NAME=warehouse_management
 JWT_SECRET=your_secret_key
 ```
 
----
 
 ### Frontend Setup
 
 ```bash
-cd frontend
+cd warehouse-frontend
 
 npm install
 
@@ -214,7 +208,7 @@ Create a `.env.local` file:
 NEXT_PUBLIC_API_URL=http://localhost:3000
 ```
 
----
+
 
 ## 📡 API Documentation
 
@@ -231,7 +225,7 @@ Swagger provides:
 * Authentication testing
 * Interactive API execution
 
----
+
 
 ## 🔐 Authentication & Security
 
@@ -242,7 +236,7 @@ The system uses:
 * Role-Based Access Control (RBAC)
 * Secure Password Handling
 
----
+
 
 ## 📊 Reports
 
@@ -253,7 +247,7 @@ The application supports exporting data in multiple formats:
 * Inventory Reports
 * Transaction Reports
 
----
+
 
 ## 📷 Screenshots
 
@@ -271,7 +265,7 @@ The application supports exporting data in multiple formats:
 * Activity Logs & Auditing
 * Mobile Optimization
 
----
+
 
 ## 👨‍💻 Author
 
@@ -279,7 +273,7 @@ The application supports exporting data in multiple formats:
 
 Academic Year 2025 – 2026
 
----
+
 
 ## 📄 License
 
